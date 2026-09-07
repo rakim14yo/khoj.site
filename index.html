@@ -22,6 +22,7 @@
     --ink-soft:#5C5546;
     --tagred:#A6362A;
     --grey:#726A57;
+    --mute:#B7AD8E;
   }
   *{box-sizing:border-box;}
   body{
@@ -134,7 +135,7 @@
     border:1px solid var(--ink);
     border-radius:3px;
     padding:18px 16px 14px;
-    min-width:128px;
+    min-width:140px;
     box-shadow:2px 2px 0 rgba(0,0,0,0.12);
   }
   .tag:nth-child(odd){transform:rotate(-1.6deg);}
@@ -175,7 +176,8 @@
     font-size:21px;
     color:var(--tagred);
   }
-  .tag .permo{font-size:11px;color:var(--grey);}
+  .tag .range{font-size:11px;color:var(--grey); margin-top:2px;}
+  .tag .count{font-size:10.5px;color:var(--mute); margin-top:5px;}
 
   .search-row{
     display:flex;
@@ -207,14 +209,19 @@
     font-weight:700;
     font-size:18px;
     color:var(--awning-dark);
-    margin:0 0 12px;
+    margin:0 0 4px;
+  }
+  .stall-summary{
+    font-size:12px;
+    color:var(--grey);
+    margin:0 0 14px;
   }
   .listing{
     display:flex;
     justify-content:space-between;
     align-items:baseline;
     gap:14px;
-    padding:10px 0;
+    padding:10px 0 2px;
     border-top:1px solid #E4DAC0;
     font-size:14.5px;
   }
@@ -229,12 +236,33 @@
   .listing-note{
     font-size:12.5px;
     color:var(--grey);
-    padding:0 0 12px;
-    margin-top:-8px;
-    border-bottom:1px solid #E4DAC0;
+    padding:0 0 6px;
   }
-  .listing-note:last-of-type{border-bottom:none;}
+  .listing-actions{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    padding:0 0 12px;
+    border-bottom:1px solid #E4DAC0;
+    font-size:11.5px;
+  }
+  .listing-actions:last-of-type{border-bottom:none;}
+  .mini-btn{
+    background:none;
+    border:1px solid var(--mute);
+    color:var(--ink-soft);
+    padding:4px 9px;
+    border-radius:20px;
+    font-size:11px;
+    cursor:pointer;
+    font-family:'Schibsted Grotesk', sans-serif;
+  }
+  .mini-btn:hover{border-color:var(--awning); color:var(--awning-dark);}
+  .mini-btn:disabled{opacity:0.5; cursor:default;}
+  .asof{color:var(--mute);}
   .flag{color:var(--tagred); font-weight:500;}
+  .outdated{color:var(--tagred);}
+  .flagged-note{color:var(--tagred); font-style:italic;}
 
   .empty{
     padding:20px 0;
@@ -265,7 +293,7 @@
     resize:vertical;
     min-height:58px;
   }
-  button{
+  button.submit-btn{
     font-family:'Kalam', cursive;
     font-weight:700;
     font-size:16px;
@@ -277,12 +305,29 @@
     cursor:pointer;
     margin-top:4px;
   }
-  button:hover{background:var(--awning-dark);}
+  button.submit-btn:hover{background:var(--awning-dark);}
   button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
     outline:2px solid var(--crate);
     outline-offset:2px;
   }
   .status-msg{font-size:13px;margin-top:10px;color:var(--ink-soft);min-height:16px;}
+
+  .about{
+    background:var(--wall-shadow);
+    border-left:4px solid var(--crate);
+    padding:16px 20px;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:46px;
+  }
+  .about h3{
+    font-family:'Kalam', cursive;
+    font-size:16px;
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+  .about ul{margin:0; padding-left:18px;}
+  .about li{margin-bottom:5px;}
 
   footer{
     padding:34px 0 60px;
@@ -297,6 +342,7 @@
     .locale{text-align:left;padding-top:0;}
     .field-row{flex-direction:column;}
     .board-stats{gap:22px;}
+    .listing{flex-direction:column; gap:2px;}
   }
 </style>
 </head>
@@ -323,7 +369,7 @@
   <section class="block">
     <div class="block-head">
       <h2>Cheapest to priciest</h2>
-      <p>Median rent posted per area — hover a tag, that's the going rate.</p>
+      <p>Median rent per area, with the reported range and how many rates it's based on.</p>
     </div>
     <div class="tags-row" id="ladder"></div>
   </section>
@@ -331,7 +377,7 @@
   <section class="block" id="listingsBlock">
     <div class="block-head">
       <h2>Every rate on the board</h2>
-      <p>Search an area, or browse the whole stall.</p>
+      <p>Search an area, or browse the whole stall. Tap "still this rate?" to keep an entry fresh, or flag one that looks wrong.</p>
     </div>
     <div class="search-row">
       <input type="text" id="areaSearch" placeholder="Nasirabad, GEC, Khulshi…">
@@ -396,10 +442,20 @@
           <textarea id="f-note" placeholder="Landlord raised rent mid-lease, building has a generator, water pressure is bad in the dry season…"></textarea>
         </div>
       </div>
-      <button type="submit">Post this rate</button>
+      <button type="submit" class="submit-btn">Post this rate</button>
       <div class="status-msg" id="statusMsg" role="status"></div>
     </form>
   </section>
+
+  <div class="about">
+    <h3>How to read the numbers</h3>
+    <ul>
+      <li>Every rate shows how long ago it was last confirmed. Anything past 6 months is marked as possibly outdated — rent drifts, and we'd rather say so than pretend it hasn't.</li>
+      <li>Area prices are shown as a range built from recent, un-flagged reports, not one exact figure — real markets are ranges, not single numbers.</li>
+      <li>Rates that sit far outside an area's usual range, or get flagged by several visitors, are kept visible but excluded from that area's median so a few odd entries can't skew it.</li>
+      <li>This board isn't cross-checked against every listing site automatically — treat it as a strong starting point for negotiation, not a verified appraisal.</li>
+    </ul>
+  </div>
 
   <footer>
     Khoj is an independent, unverified board — every rate is self-reported and not checked against a lease or a landlord. It exists to give renters a rough sense of what's normal before they negotiate, not to make a claim about any specific building or owner.
@@ -408,26 +464,45 @@
 </div>
 
 <script>
+const NOW = new Date();
+
 const SEED = [
-  {area:"Nasirabad", type:"Flat", rooms:"2", rent:16000, advance:3, hidden:"", year:2024, note:""},
-  {area:"Nasirabad", type:"Flat", rooms:"3", rent:22000, advance:4, hidden:"Tk 1,200/mo 'gas line' charge", year:2023, note:""},
-  {area:"Nasirabad", type:"Room / single unit", rooms:"1", rent:7500, advance:2, hidden:"", year:2025, note:"Shared rooftop tank, low pressure in dry season"},
-  {area:"Panchlaish", type:"Flat", rooms:"2", rent:19000, advance:3, hidden:"", year:2024, note:""},
-  {area:"Panchlaish", type:"Flat", rooms:"3", rent:27000, advance:6, hidden:"'House tuning' fee Tk 15,000 one-time", year:2022, note:"Advance never returned on exit"},
-  {area:"Khulshi", type:"Flat", rooms:"3", rent:35000, advance:4, hidden:"", year:2024, note:""},
-  {area:"GEC Circle", type:"Flat", rooms:"2", rent:21000, advance:3, hidden:"Tk 800/mo lift maintenance", year:2025, note:""},
-  {area:"Agrabad", type:"Flat", rooms:"2", rent:15000, advance:2, hidden:"", year:2023, note:""},
-  {area:"Agrabad", type:"House (full)", rooms:"4+", rent:42000, advance:6, hidden:"", year:2021, note:""},
-  {area:"Halishahar", type:"Flat", rooms:"2", rent:13500, advance:3, hidden:"", year:2024, note:""},
+  {id:"seed-1", area:"Nasirabad", type:"Flat", rooms:"2", rent:16000, advance:3, hidden:"", year:2024, note:"", asOf:"2026-08-01", flagCount:0},
+  {id:"seed-2", area:"Nasirabad", type:"Flat", rooms:"3", rent:22000, advance:4, hidden:"Tk 1,200/mo 'gas line' charge", year:2023, note:"", asOf:"2025-01-15", flagCount:0},
+  {id:"seed-3", area:"Nasirabad", type:"Room / single unit", rooms:"1", rent:7500, advance:2, hidden:"", year:2025, note:"Shared rooftop tank, low pressure in dry season", asOf:"2026-08-25", flagCount:0},
+  {id:"seed-4", area:"Panchlaish", type:"Flat", rooms:"2", rent:19000, advance:3, hidden:"", year:2024, note:"", asOf:"2026-03-01", flagCount:0},
+  {id:"seed-5", area:"Panchlaish", type:"Flat", rooms:"3", rent:27000, advance:6, hidden:"'House tuning' fee Tk 15,000 one-time", year:2022, note:"Advance never returned on exit", asOf:"2024-05-01", flagCount:0},
+  {id:"seed-6", area:"Khulshi", type:"Flat", rooms:"3", rent:35000, advance:4, hidden:"", year:2024, note:"", asOf:"2026-07-01", flagCount:0},
+  {id:"seed-7", area:"GEC Circle", type:"Flat", rooms:"2", rent:21000, advance:3, hidden:"Tk 800/mo lift maintenance", year:2025, note:"", asOf:"2026-08-10", flagCount:0},
+  {id:"seed-8", area:"Agrabad", type:"Flat", rooms:"2", rent:15000, advance:2, hidden:"", year:2023, note:"", asOf:"2025-02-01", flagCount:0},
+  {id:"seed-9", area:"Agrabad", type:"House (full)", rooms:"4+", rent:42000, advance:6, hidden:"", year:2021, note:"", asOf:"2023-09-01", flagCount:0},
+  {id:"seed-10", area:"Halishahar", type:"Flat", rooms:"2", rent:13500, advance:3, hidden:"", year:2024, note:"", asOf:"2026-06-15", flagCount:0},
 ];
 
-const STORAGE_KEY = "khoj-reports-v3";
+const STORAGE_KEY = "khoj-reports-v4";
+const LAST_SUBMIT_KEY = "khoj-last-submit";
+const FLAGGED_KEY = "khoj-flagged-ids";
+const SUBMIT_COOLDOWN_MS = 90 * 1000;
+
 let allReports = [];
 
 function fmtTk(n){
   n = Number(n);
   if(isNaN(n)) return "—";
   return "Tk " + n.toLocaleString('en-IN');
+}
+
+function monthsAgo(dateStr){
+  const d = new Date(dateStr);
+  if(isNaN(d)) return 999;
+  return Math.floor((NOW - d) / (1000*60*60*24*30));
+}
+
+function ageLabel(dateStr){
+  const m = monthsAgo(dateStr);
+  if(m <= 0) return "confirmed this month";
+  if(m === 1) return "confirmed 1 mo ago";
+  return "confirmed " + m + " mo ago";
 }
 
 function groupByArea(reports){
@@ -446,12 +521,35 @@ function median(nums){
   return s.length % 2 ? s[mid] : Math.round((s[mid-1]+s[mid])/2);
 }
 
+function areaStats(items){
+  const reliable = items.filter(r => (r.flagCount||0) < 3);
+  const base = reliable.length ? reliable : items;
+  const roughMed = median(base.map(r=>r.rent));
+  const n = base.length;
+  const clean = base.filter(r => {
+    if(n < 3) return true;
+    return r.rent <= roughMed*2.5 && r.rent >= roughMed*0.4;
+  });
+  const cleanRents = clean.length ? clean.map(r=>r.rent) : base.map(r=>r.rent);
+  return {
+    median: median(cleanRents),
+    min: Math.min(...cleanRents),
+    max: Math.max(...cleanRents),
+    count: items.length
+  };
+}
+
+function isOutlierRent(rent, stats, sampleSize){
+  if(sampleSize < 3) return false;
+  return rent > stats.median*2.5 || rent < stats.median*0.4;
+}
+
 function renderTags(){
   const grouped = groupByArea(allReports);
   const rows = Object.keys(grouped).map(area=>{
-    const rents = grouped[area].map(r=>r.rent).filter(n=>!isNaN(n));
-    return { area, med: median(rents) };
-  }).sort((a,b)=>a.med-b.med);
+    const stats = areaStats(grouped[area]);
+    return { area, stats };
+  }).sort((a,b)=>a.stats.median-b.stats.median);
 
   const ladderEl = document.getElementById('ladder');
   ladderEl.innerHTML = "";
@@ -462,8 +560,9 @@ function renderTags(){
     el.innerHTML =
       '<div class="rank">#' + (i+1) + '</div>' +
       '<div class="area">' + escapeHtml(row.area) + '</div>' +
-      '<div class="price">' + fmtTk(row.med) + '</div>' +
-      '<div class="permo">per month</div>';
+      '<div class="price">' + fmtTk(row.stats.median) + '</div>' +
+      '<div class="range">' + fmtTk(row.stats.min) + '–' + fmtTk(row.stats.max) + '</div>' +
+      '<div class="count">based on ' + row.stats.count + ' report' + (row.stats.count===1?'':'s') + '</div>';
     ladderEl.appendChild(el);
   });
 }
@@ -477,6 +576,13 @@ function animateCount(el, target){
     if(p < 1) requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+}
+
+async function getFlaggedIds(){
+  try{
+    const r = await window.storage.get(FLAGGED_KEY, false);
+    return r && r.value ? JSON.parse(r.value) : [];
+  }catch(e){ return []; }
 }
 
 function render(filterText){
@@ -500,40 +606,100 @@ function render(filterText){
   const grouped = groupByArea(filtered);
   const areaNames = Object.keys(grouped).sort();
 
-  areaNames.forEach(area=>{
-    const stall = document.createElement('div');
-    stall.className = 'stall';
-    const heading = document.createElement('div');
-    heading.className = 'stall-name';
-    heading.textContent = area;
-    stall.appendChild(heading);
+  getFlaggedIds().then(flaggedByMe=>{
+    areaNames.forEach(area=>{
+      const items = grouped[area];
+      const stats = areaStats(items);
+      const stall = document.createElement('div');
+      stall.className = 'stall';
+      stall.innerHTML =
+        '<div class="stall-name">' + escapeHtml(area) + '</div>' +
+        '<div class="stall-summary">median ' + fmtTk(stats.median) + ' · range ' + fmtTk(stats.min) + '–' + fmtTk(stats.max) + ' · ' + stats.count + ' report' + (stats.count===1?'':'s') + '</div>';
 
-    grouped[area].forEach(r=>{
-      const row = document.createElement('div');
-      row.className = 'listing';
-      row.innerHTML =
-        '<span class="desc">' + escapeHtml(r.type) + ', ' + escapeHtml(r.rooms) + ' bed</span>' +
-        '<span class="price">' + fmtTk(r.rent) + '/mo</span>';
-      stall.appendChild(row);
+      items.forEach(r=>{
+        const outdated = monthsAgo(r.asOf) >= 6;
+        const outlier = isOutlierRent(r.rent, stats, items.length);
+        const heavilyFlagged = (r.flagCount||0) >= 3;
 
-      const metaBits = [];
-      metaBits.push('advance ' + (r.advance || "?") + ' mo' + (r.year ? ' · moved in ' + r.year : ''));
-      if(r.hidden && r.hidden.trim()) metaBits.push('<span class="flag">' + escapeHtml(r.hidden) + '</span>');
-      if(r.note && r.note.trim()) metaBits.push(escapeHtml(r.note));
+        const row = document.createElement('div');
+        row.className = 'listing';
+        row.innerHTML =
+          '<span class="desc">' + escapeHtml(r.type) + ', ' + escapeHtml(r.rooms) + ' bed' + (r.advance ? ' · advance ' + escapeHtml(String(r.advance)) + ' mo' : '') + '</span>' +
+          '<span class="price">' + fmtTk(r.rent) + '/mo</span>';
+        stall.appendChild(row);
 
-      const note = document.createElement('div');
-      note.className = 'listing-note';
-      note.innerHTML = metaBits.join(' · ');
-      stall.appendChild(note);
+        const noteBits = [];
+        if(r.hidden && r.hidden.trim()) noteBits.push('<span class="flag">' + escapeHtml(r.hidden) + '</span>');
+        if(r.note && r.note.trim()) noteBits.push(escapeHtml(r.note));
+        if(outlier) noteBits.push('<span class="flagged-note">far from this area\\'s usual range — worth double-checking</span>');
+        if(heavilyFlagged) noteBits.push('<span class="flagged-note">flagged by several visitors</span>');
+        if(noteBits.length){
+          const note = document.createElement('div');
+          note.className = 'listing-note';
+          note.innerHTML = noteBits.join(' · ');
+          stall.appendChild(note);
+        }
+
+        const actions = document.createElement('div');
+        actions.className = 'listing-actions';
+        const alreadyFlagged = flaggedByMe.includes(r.id);
+        actions.innerHTML =
+          '<span class="asof' + (outdated ? ' outdated' : '') + '">' + ageLabel(r.asOf) + (outdated ? ' · may be outdated' : '') + '</span>' +
+          '<button type="button" class="mini-btn" data-action="confirm" data-id="' + r.id + '">still this rate?</button>' +
+          '<button type="button" class="mini-btn" data-action="flag" data-id="' + r.id + '"' + (alreadyFlagged ? ' disabled' : '') + '>' + (alreadyFlagged ? 'flagged' : 'looks off') + '</button>';
+        stall.appendChild(actions);
+      });
+      listEl.appendChild(stall);
     });
-    listEl.appendChild(stall);
+
+    listEl.querySelectorAll('.mini-btn').forEach(btn=>{
+      btn.addEventListener('click', onMiniAction);
+    });
   });
+}
+
+async function onMiniAction(e){
+  const btn = e.currentTarget;
+  const id = btn.dataset.id;
+  const action = btn.dataset.action;
+  const report = allReports.find(r=>r.id===id);
+  if(!report) return;
+
+  if(action === 'confirm'){
+    report.asOf = new Date().toISOString().slice(0,10);
+    await persistUpdate(id, {asOf: report.asOf});
+  } else if(action === 'flag'){
+    report.flagCount = (report.flagCount||0) + 1;
+    await persistUpdate(id, {flagCount: report.flagCount});
+    const flagged = await getFlaggedIds();
+    flagged.push(id);
+    try{
+      const cur = await window.storage.get(FLAGGED_KEY, false).catch(()=>null);
+      await window.storage.set(FLAGGED_KEY, JSON.stringify(flagged), false);
+    }catch(err){}
+  }
+  renderTags();
+  render(document.getElementById('areaSearch').value);
+}
+
+async function persistUpdate(id, patch){
+  if(id.startsWith('seed-')) return; // seed rows only update in-memory for this session
+  try{
+    const result = await window.storage.get(STORAGE_KEY, true);
+    let stored = result && result.value ? JSON.parse(result.value) : [];
+    stored = stored.map(r => r.id === id ? Object.assign({}, r, patch) : r);
+    await window.storage.set(STORAGE_KEY, JSON.stringify(stored), true);
+  }catch(e){}
 }
 
 function escapeHtml(str){
   const d = document.createElement('div');
   d.textContent = str;
   return d.innerHTML;
+}
+
+function makeId(){
+  return 'r-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,7);
 }
 
 async function loadReports(){
@@ -586,7 +752,19 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
     return;
   }
 
+  try{
+    const last = await window.storage.get(LAST_SUBMIT_KEY, false).catch(()=>null);
+    if(last && last.value){
+      const elapsed = Date.now() - Number(last.value);
+      if(elapsed < SUBMIT_COOLDOWN_MS){
+        statusMsg.textContent = "You just posted a rate — give it a minute before adding another.";
+        return;
+      }
+    }
+  }catch(e){}
+
   const report = {
+    id: makeId(),
     area: area,
     type: document.getElementById('f-type').value,
     rooms: document.getElementById('f-rooms').value,
@@ -595,11 +773,14 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
     hidden: document.getElementById('f-hidden').value.trim(),
     year: document.getElementById('f-year').value.trim(),
     note: document.getElementById('f-note').value.trim(),
+    asOf: new Date().toISOString().slice(0,10),
+    flagCount: 0
   };
 
   statusMsg.textContent = "Posting…";
   try{
     await saveReport(report);
+    await window.storage.set(LAST_SUBMIT_KEY, String(Date.now()), false).catch(()=>{});
     allReports.push(report);
     renderTags();
     render(document.getElementById('areaSearch').value);
