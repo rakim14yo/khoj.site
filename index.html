@@ -3,346 +3,522 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khoj — today's rent rates, Chattogram</title>
+<title>খোঁজ — the going rate for rent, before you walk in the door</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Schibsted+Grotesk:wght@400;500;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --wall:#EDE4D0;
-    --wall-shadow:#E0D4B8;
-    --board:#243128;
-    --board-edge:#1A2320;
-    --chalk:#F7F3E6;
-    --awning:#2E6B4F;
-    --awning-dark:#1E4936;
-    --crate:#C77B2C;
-    --tag-string:#8A7A5C;
-    --ink:#2A2620;
-    --ink-soft:#5C5546;
-    --tagred:#A6362A;
-    --grey:#726A57;
-    --mute:#B7AD8E;
+    --paper:#F1E8CF;
+    --paper-shadow:#E4D6AC;
+    --paper-line:#D9C89C;
+    --green:#1E4936;
+    --green-deep:#152F23;
+    --chalk:#F7F1DD;
+    --mustard:#D98F2B;
+    --mustard-dark:#B5701A;
+    --ink:#241F16;
+    --ink-soft:#5B5340;
+    --red:#A6392A;
+    --grey:#6E6650;
+    --mute:#AC9F79;
+    --line:#C9B98A;
   }
   *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
   body{
     margin:0;
-    background:var(--wall);
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(255,255,255,0.35), transparent 40%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.03), transparent 45%);
     color:var(--ink);
-    font-family:'Schibsted Grotesk', sans-serif;
-    line-height:1.5;
+    font-family:'Schibsted Grotesk','Hind Siliguri', sans-serif;
+    line-height:1.55;
     -webkit-font-smoothing:antialiased;
   }
   @media (prefers-reduced-motion: reduce){
-    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
   }
-  .wrap{max-width:780px;margin:0 auto;padding:0 22px;}
+  .bn{font-family:'Hind Siliguri','Kalam',sans-serif;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px;}
 
+  a{color:inherit;}
+
+  /* ---------- header ---------- */
   header{
-    padding:36px 0 18px;
+    padding:26px 0 16px;
     display:flex;
     justify-content:space-between;
-    align-items:flex-start;
-    border-bottom:6px solid var(--crate);
+    align-items:center;
+    gap:14px;
+    border-bottom:5px solid var(--mustard);
   }
-  .shopsign{
-    background:var(--awning);
-    color:var(--chalk);
-    padding:10px 18px;
-    font-family:'Kalam', cursive;
-    font-weight:700;
-    font-size:22px;
-    transform:rotate(-1deg);
-    box-shadow: 3px 3px 0 var(--awning-dark);
-  }
-  .locale{
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand img{height:52px;width:52px;display:block;}
+  .brand-name{font-family:'Kalam',cursive;font-weight:700;font-size:15px;color:var(--green);line-height:1.2;}
+  .brand-name small{display:block;font-family:'Schibsted Grotesk',sans-serif;font-weight:500;font-size:10.5px;color:var(--grey);letter-spacing:0.02em;}
+  nav.top-actions{display:flex;gap:8px;}
+  .nav-btn{
     font-size:12.5px;
-    color:var(--grey);
-    text-align:right;
-    padding-top:8px;
+    font-weight:600;
+    padding:8px 13px;
+    border:1.5px solid var(--green);
+    color:var(--green);
+    background:transparent;
+    border-radius:3px;
+    cursor:pointer;
+    text-decoration:none;
+    white-space:nowrap;
   }
+  .nav-btn.solid{background:var(--green);color:var(--chalk);}
+  .nav-btn.solid:hover{background:var(--green-deep);}
 
+  /* ---------- hero ---------- */
+  .hero{padding:38px 0 6px;}
+  .motto{
+    display:inline-block;
+    font-family:'Kalam',cursive;
+    font-size:13.5px;
+    color:var(--mustard-dark);
+    background:rgba(217,143,43,0.12);
+    border:1px dashed var(--mustard);
+    padding:5px 12px;
+    border-radius:20px;
+    margin-bottom:16px;
+  }
   h1{
     font-family:'Kalam', cursive;
     font-weight:700;
-    font-size:clamp(30px,5.2vw,46px);
-    line-height:1.15;
-    margin:36px 0 12px;
-    max-width:13ch;
+    font-size:clamp(28px,6vw,42px);
+    line-height:1.18;
+    margin:0 0 14px;
+    max-width:15ch;
     color:var(--ink);
   }
-  .sub{
-    font-size:16.5px;
+  .promise{
+    font-size:16px;
     color:var(--ink-soft);
-    max-width:44ch;
-    margin:0 0 30px;
+    max-width:46ch;
+    margin:0 0 6px;
+  }
+  .explainer{
+    font-size:14.5px;
+    color:var(--grey);
+    max-width:50ch;
+    margin:0 0 28px;
+    padding:14px 16px;
+    background:var(--chalk);
+    border-left:3px solid var(--green);
+  }
+  .explainer strong{color:var(--ink);}
+
+  /* ---------- search ---------- */
+  .search-panel{
+    background:var(--green);
+    border:3px solid var(--green-deep);
+    padding:20px 20px 18px;
+    margin-bottom:14px;
+    position:relative;
+  }
+  .search-panel::before{
+    content:"";
+    position:absolute;
+    left:16px; right:16px; top:6px;
+    height:1px;
+    background:rgba(255,255,255,0.14);
+  }
+  .search-label{
+    font-family:'Kalam',cursive;
+    font-size:14px;
+    color:#E7D9A8;
+    margin-bottom:10px;
+  }
+  .search-box{
+    display:flex;
+    background:var(--chalk);
+    border-radius:4px;
+    overflow:hidden;
+    border:1px solid var(--green-deep);
+  }
+  #areaSearch{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:14px 14px;
+    font-size:16px;
+    font-family:'Schibsted Grotesk',sans-serif;
+    color:var(--ink);
+  }
+  #areaSearch:focus{outline:none;}
+  #searchBtn{
+    border:none;
+    background:var(--mustard);
+    color:var(--green-deep);
+    font-weight:700;
+    font-size:14px;
+    padding:0 20px;
+    cursor:pointer;
+    font-family:'Schibsted Grotesk',sans-serif;
+  }
+  #searchBtn:hover{background:var(--mustard-dark); color:var(--chalk);}
+  .suggest-list{
+    background:var(--chalk);
+    border:1px solid var(--green-deep);
+    border-top:none;
+    margin-top:-1px;
+    max-height:220px;
+    overflow-y:auto;
+    display:none;
+  }
+  .suggest-list.open{display:block;}
+  .suggest-item{
+    padding:10px 14px;
+    font-size:14px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    border-top:1px solid #E4DAC0;
+  }
+  .suggest-item:first-child{border-top:none;}
+  .suggest-item:hover, .suggest-item.active{background:var(--paper);}
+  .suggest-item .n{color:var(--grey); font-size:12px;}
+  .search-examples{
+    font-size:12px;
+    color:#C9BE97;
+    margin-top:10px;
   }
 
+  .cta-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:38px;}
+  .btn-post{
+    font-family:'Kalam',cursive;
+    font-weight:700;
+    font-size:16px;
+    background:var(--mustard);
+    color:var(--green-deep);
+    border:none;
+    padding:13px 22px;
+    border-radius:3px;
+    cursor:pointer;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .btn-post:hover{background:var(--mustard-dark); color:var(--chalk);}
+  .post-conditions{
+    font-size:12.5px;
+    color:var(--grey);
+    display:flex;
+    align-items:center;
+  }
+
+  /* ---------- live board ---------- */
   .board{
-    background:var(--board);
-    border:3px solid var(--board-edge);
+    background:var(--ink);
+    border:1px solid var(--green-deep);
     color:var(--chalk);
-    padding:22px 24px;
+    padding:20px 22px;
     margin-bottom:44px;
     position:relative;
   }
   .board-title{
     font-family:'Kalam', cursive;
-    font-size:15px;
+    font-size:14.5px;
     color:#D9CFA8;
-    margin-bottom:10px;
+    margin-bottom:12px;
   }
-  .board-stats{
-    display:flex;
-    gap:32px;
-    flex-wrap:wrap;
-  }
+  .board-stats{display:flex; gap:30px; flex-wrap:wrap;}
   .board-stat .num{
     font-family:'Kalam', cursive;
     font-weight:700;
-    font-size:34px;
+    font-size:32px;
     display:block;
     line-height:1;
+    color:var(--chalk);
   }
-  .board-stat .lbl{
-    font-size:12.5px;
-    color:#C9BE97;
-    margin-top:4px;
-  }
+  .board-stat .lbl{font-size:12px; color:#C9BE97; margin-top:4px; max-width:15ch;}
 
-  section.block{margin-bottom:50px;}
+  /* ---------- belief block ---------- */
+  .belief{
+    margin:0 0 46px;
+    padding:22px 0 22px 18px;
+    border-left:4px solid var(--mustard);
+  }
+  .belief p{
+    font-family:'Kalam',cursive;
+    font-size:19px;
+    line-height:1.5;
+    color:var(--green);
+    margin:0;
+    max-width:40ch;
+  }
+  .belief p + p{margin-top:10px; font-family:'Schibsted Grotesk',sans-serif; font-size:14px; color:var(--ink-soft); font-weight:400;}
+
+  /* ---------- sections ---------- */
+  section.block{margin-bottom:52px;}
   .block-head h2{
     font-family:'Kalam', cursive;
     font-weight:700;
-    font-size:23px;
+    font-size:22px;
     margin:0 0 4px;
   }
-  .block-head p{
-    font-size:14px;
-    color:var(--grey);
-    margin:0 0 22px;
-  }
+  .block-head p{font-size:13.5px; color:var(--grey); margin:0 0 20px;}
 
-  .tags-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:26px 20px;
-    padding-top:10px;
-  }
+  /* ---------- area ladder tags ---------- */
+  .tags-row{display:flex; flex-wrap:wrap; gap:26px 18px; padding-top:8px;}
   .tag{
     position:relative;
     background:var(--chalk);
     border:1px solid var(--ink);
     border-radius:3px;
-    padding:18px 16px 14px;
-    min-width:140px;
+    padding:16px 15px 12px;
+    min-width:132px;
     box-shadow:2px 2px 0 rgba(0,0,0,0.12);
+    cursor:pointer;
+    text-align:left;
+    font-family:inherit;
   }
-  .tag:nth-child(odd){transform:rotate(-1.6deg);}
-  .tag:nth-child(even){transform:rotate(1.4deg);}
-  .tag::before{
-    content:"";
-    position:absolute;
-    top:-13px;
-    left:50%;
-    width:1px;
-    height:13px;
-    background:var(--tag-string);
-  }
-  .tag::after{
-    content:"";
-    position:absolute;
-    top:-5px;
-    left:50%;
-    transform:translateX(-50%);
-    width:7px;height:7px;
-    border-radius:50%;
-    background:var(--wall);
-    border:1px solid var(--ink);
-  }
-  .tag .rank{
-    font-size:11px;
-    color:var(--grey);
-    margin-bottom:4px;
-  }
-  .tag .area{
-    font-weight:600;
-    font-size:14.5px;
-    margin-bottom:6px;
-  }
-  .tag .price{
-    font-family:'Kalam', cursive;
-    font-weight:700;
-    font-size:21px;
-    color:var(--tagred);
-  }
-  .tag .range{font-size:11px;color:var(--grey); margin-top:2px;}
-  .tag .count{font-size:10.5px;color:var(--mute); margin-top:5px;}
+  .tag:nth-child(odd){transform:rotate(-1.4deg);}
+  .tag:nth-child(even){transform:rotate(1.2deg);}
+  .tag:hover{transform:rotate(0deg) translateY(-2px);}
+  .tag::before{content:"";position:absolute;top:-12px;left:50%;width:1px;height:12px;background:var(--mute);}
+  .tag::after{content:"";position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:var(--paper);border:1px solid var(--ink);}
+  .tag .rank{font-size:10.5px; color:var(--grey); margin-bottom:3px;}
+  .tag .area{font-weight:600; font-size:14px; margin-bottom:5px;}
+  .tag .price{font-family:'Kalam', cursive; font-weight:700; font-size:20px; color:var(--red);}
+  .tag .range{font-size:10.5px; color:var(--grey); margin-top:2px;}
+  .tag .count{font-size:10px; color:var(--mute); margin-top:5px;}
 
-  .search-row{
-    display:flex;
-    gap:10px;
-    margin-bottom:6px;
+  /* ---------- area page ---------- */
+  .area-page{display:none;}
+  .area-page.open{display:block;}
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:13px;
+    color:var(--green);
+    font-weight:600;
+    cursor:pointer;
+    background:none;
+    border:none;
+    padding:0 0 16px;
+    font-family:inherit;
   }
-  input[type=text], select{
-    font-family:'Schibsted Grotesk', sans-serif;
-    font-size:15px;
-    padding:11px 13px;
+  .back-link:hover{text-decoration:underline;}
+  .area-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .area-header h2{
+    font-family:'Kalam',cursive;
+    font-size:26px;
+    margin:0;
+  }
+  .area-header .freshness{font-size:12px; color:var(--grey);}
+
+  .stat-strip{
+    display:flex;
+    gap:0;
+    background:var(--chalk);
+    border:1px solid var(--ink);
+    margin-bottom:20px;
+  }
+  .stat-cell{
+    flex:1;
+    padding:14px 12px;
+    border-right:1px solid var(--paper-line);
+    text-align:center;
+  }
+  .stat-cell:last-child{border-right:none;}
+  .stat-cell .v{font-family:'Kalam',cursive; font-weight:700; font-size:19px; color:var(--green);}
+  .stat-cell .l{font-size:10.5px; color:var(--grey); margin-top:3px;}
+
+  .filter-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
+  .filter-row select{
+    font-family:'Schibsted Grotesk',sans-serif;
+    font-size:13px;
+    padding:8px 10px;
     border:1px solid var(--ink);
     background:var(--chalk);
-    color:var(--ink);
     border-radius:3px;
+    color:var(--ink);
   }
-  #areaSearch{flex:1;}
-  .search-hint{font-size:12.5px;color:var(--grey);margin:0 0 26px;}
+
+  .dist-wrap{margin-bottom:22px;}
+  .dist-title{font-size:12px; color:var(--grey); margin-bottom:8px;}
+  .dist-bars{display:flex; align-items:flex-end; gap:6px; height:64px;}
+  .dist-bar{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;}
+  .dist-bar .fill{width:100%; background:var(--mustard); border-radius:2px 2px 0 0; min-height:3px;}
+  .dist-bar .fill.zero{background:var(--paper-line);}
+  .dist-bar .bl{font-size:9.5px; color:var(--grey); margin-top:5px; text-align:center; line-height:1.2;}
+  .dist-bar .bn{font-size:10px; color:var(--ink-soft); font-weight:600;}
 
   .stall{
     background:var(--chalk);
     border:1px solid var(--ink);
-    border-top:5px solid var(--awning);
-    padding:18px 20px 8px;
-    margin-top:22px;
-    box-shadow:3px 3px 0 rgba(0,0,0,0.08);
-  }
-  .stall-name{
-    font-family:'Kalam', cursive;
-    font-weight:700;
-    font-size:18px;
-    color:var(--awning-dark);
-    margin:0 0 4px;
-  }
-  .stall-summary{
-    font-size:12px;
-    color:var(--grey);
-    margin:0 0 14px;
+    border-top:5px solid var(--green);
+    padding:16px 18px 6px;
+    box-shadow:3px 3px 0 rgba(0,0,0,0.07);
   }
   .listing{
     display:flex;
     justify-content:space-between;
     align-items:baseline;
     gap:14px;
-    padding:10px 0 2px;
+    padding:11px 0 3px;
     border-top:1px solid #E4DAC0;
-    font-size:14.5px;
+    font-size:14px;
   }
   .listing:first-of-type{border-top:none;}
   .listing .desc{color:var(--ink);}
-  .listing .price{
-    font-weight:600;
-    color:var(--ink);
-    white-space:nowrap;
-    font-variant-numeric: tabular-nums;
-  }
-  .listing-note{
-    font-size:12.5px;
-    color:var(--grey);
-    padding:0 0 6px;
-  }
+  .listing .price{font-weight:700; color:var(--ink); white-space:nowrap; font-variant-numeric: tabular-nums; font-family:'Kalam',cursive;}
+  .listing-meta{font-size:11.5px; color:var(--grey); padding:0 0 4px;}
+  .listing-note{font-size:12px; color:var(--grey); padding:0 0 6px;}
   .listing-actions{
-    display:flex;
-    gap:14px;
-    align-items:center;
-    padding:0 0 12px;
-    border-bottom:1px solid #E4DAC0;
-    font-size:11.5px;
+    display:flex; gap:12px; align-items:center;
+    padding:0 0 12px; border-bottom:1px solid #E4DAC0; font-size:11px;
   }
   .listing-actions:last-of-type{border-bottom:none;}
   .mini-btn{
-    background:none;
-    border:1px solid var(--mute);
-    color:var(--ink-soft);
-    padding:4px 9px;
-    border-radius:20px;
-    font-size:11px;
-    cursor:pointer;
+    background:none; border:1px solid var(--mute); color:var(--ink-soft);
+    padding:4px 9px; border-radius:20px; font-size:10.5px; cursor:pointer;
     font-family:'Schibsted Grotesk', sans-serif;
   }
-  .mini-btn:hover{border-color:var(--awning); color:var(--awning-dark);}
+  .mini-btn:hover{border-color:var(--green); color:var(--green);}
   .mini-btn:disabled{opacity:0.5; cursor:default;}
   .asof{color:var(--mute);}
-  .flag{color:var(--tagred); font-weight:500;}
-  .outdated{color:var(--tagred);}
-  .flagged-note{color:var(--tagred); font-style:italic;}
+  .flag{color:var(--red); font-weight:600;}
+  .outdated{color:var(--red);}
+  .flagged-note{color:var(--red); font-style:italic;}
 
-  .empty{
-    padding:20px 0;
-    color:var(--grey);
-    font-size:14.5px;
-    font-style:italic;
-  }
-
-  form{
+  .empty-state{
+    padding:34px 20px;
+    text-align:center;
     background:var(--chalk);
-    border:1px solid var(--ink);
-    border-top:5px solid var(--crate);
-    padding:24px;
+    border:1px dashed var(--line);
   }
-  .field-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:13px;}
-  .field{flex:1;min-width:150px;display:flex;flex-direction:column;gap:5px;}
-  label{font-size:12.5px;color:var(--grey);}
+  .empty-state .headline{font-family:'Kalam',cursive; font-size:18px; color:var(--green); margin-bottom:8px;}
+  .empty-state p{font-size:13.5px; color:var(--grey); max-width:34ch; margin:0 auto 16px;}
+
+  /* ---------- post flow ---------- */
+  .post-modal-backdrop{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(20,16,8,0.55);
+    z-index:50;
+    align-items:flex-start;
+    justify-content:center;
+    overflow-y:auto;
+    padding:26px 14px;
+  }
+  .post-modal-backdrop.open{display:flex;}
+  .post-modal{
+    background:var(--paper);
+    border:3px solid var(--green-deep);
+    max-width:480px;
+    width:100%;
+    padding:24px 22px 20px;
+    position:relative;
+    margin-top: 10px;
+  }
+  .post-close{
+    position:absolute; top:10px; right:12px;
+    background:none; border:none; font-size:20px; color:var(--grey); cursor:pointer; line-height:1;
+  }
+  .post-close:hover{color:var(--ink);}
+  .step-progress{display:flex; gap:6px; margin-bottom:6px;}
+  .step-dot{flex:1; height:4px; background:var(--paper-line); border-radius:2px;}
+  .step-dot.done{background:var(--green);}
+  .step-dot.current{background:var(--mustard);}
+  .step-label{font-size:11.5px; color:var(--grey); margin-bottom:16px;}
+  .step-title{font-family:'Kalam',cursive; font-size:20px; margin:0 0 4px;}
+  .step-sub{font-size:13px; color:var(--grey); margin:0 0 18px;}
+  .step-pane{display:none;}
+  .step-pane.active{display:block;}
+  .field-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:13px;}
+  .field{flex:1; min-width:130px; display:flex; flex-direction:column; gap:5px;}
+  label{font-size:12px; color:var(--grey);}
   input,select{width:100%;}
+  input[type=text], select{
+    font-family:'Schibsted Grotesk', sans-serif;
+    font-size:15px;
+    padding:11px 12px;
+    border:1px solid var(--ink);
+    background:var(--chalk);
+    color:var(--ink);
+    border-radius:3px;
+  }
   textarea{
     font-family:'Schibsted Grotesk', sans-serif;
     font-size:14px;
     padding:10px 12px;
     border:1px solid var(--ink);
-    background:var(--wall);
+    background:var(--chalk);
     color:var(--ink);
     border-radius:3px;
     width:100%;
     resize:vertical;
-    min-height:58px;
+    min-height:64px;
   }
-  button.submit-btn{
-    font-family:'Kalam', cursive;
-    font-weight:700;
-    font-size:16px;
-    background:var(--awning);
-    color:var(--chalk);
-    border:none;
-    padding:12px 22px;
+  .anon-note{
+    font-size:12px;
+    color:var(--green);
+    background:rgba(30,73,54,0.08);
+    padding:9px 11px;
     border-radius:3px;
-    cursor:pointer;
-    margin-top:4px;
+    margin:4px 0 16px;
   }
-  button.submit-btn:hover{background:var(--awning-dark);}
+  .step-actions{display:flex; justify-content:space-between; align-items:center; margin-top:10px;}
+  .btn-ghost{
+    background:none; border:none; color:var(--ink-soft); font-size:14px; cursor:pointer;
+    font-family:'Schibsted Grotesk',sans-serif; padding:10px 4px;
+  }
+  .btn-ghost:hover{color:var(--ink);}
+  .btn-next{
+    font-family:'Kalam', cursive; font-weight:700; font-size:16px;
+    background:var(--green); color:var(--chalk); border:none;
+    padding:11px 24px; border-radius:3px; cursor:pointer;
+  }
+  .btn-next:hover{background:var(--green-deep);}
   button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
-    outline:2px solid var(--crate);
-    outline-offset:2px;
+    outline:2px solid var(--mustard); outline-offset:2px;
   }
-  .status-msg{font-size:13px;margin-top:10px;color:var(--ink-soft);min-height:16px;}
+  .status-msg{font-size:13px; margin-top:10px; color:var(--ink-soft); min-height:16px;}
 
+  /* ---------- about + footer ---------- */
   .about{
-    background:var(--wall-shadow);
-    border-left:4px solid var(--crate);
+    background:var(--paper-shadow);
+    border-left:4px solid var(--mustard);
     padding:16px 20px;
     font-size:13px;
     color:var(--ink-soft);
     margin-bottom:46px;
   }
-  .about h3{
-    font-family:'Kalam', cursive;
-    font-size:16px;
-    margin:0 0 8px;
-    color:var(--ink);
-  }
+  .about h3{font-family:'Kalam', cursive; font-size:16px; margin:0 0 8px; color:var(--ink);}
   .about ul{margin:0; padding-left:18px;}
   .about li{margin-bottom:5px;}
 
   footer{
-    padding:34px 0 60px;
-    border-top:1px solid var(--wall-shadow);
-    font-size:12.5px;
+    padding:30px 0 60px;
+    border-top:1px solid var(--paper-line);
+    font-size:12px;
     color:var(--grey);
-    max-width:52ch;
+    max-width:54ch;
   }
+  footer .fmark{font-family:'Kalam',cursive; color:var(--green); font-size:14px; display:block; margin-bottom:8px;}
 
   @media (max-width:520px){
-    header{flex-direction:column;gap:12px;}
-    .locale{text-align:left;padding-top:0;}
-    .field-row{flex-direction:column;}
-    .board-stats{gap:22px;}
+    header{padding:20px 0 14px;}
+    .brand img{height:44px; width:44px;}
+    nav.top-actions .nav-btn:not(.solid){display:none;}
+    .board-stats{gap:20px;}
     .listing{flex-direction:column; gap:2px;}
+    .area-header{flex-direction:column;}
+    .stat-strip{flex-wrap:wrap;}
+    .stat-cell{flex:1 1 33%; border-bottom:1px solid var(--paper-line);}
   }
 </style>
 </head>
@@ -350,161 +526,278 @@
 <div class="wrap">
 
   <header>
-    <div class="shopsign">খোঁজ · Khoj</div>
-    <div class="locale">Chattogram rent stall<br>run by renters, for renters</div>
+    <div class="brand">
+      <img src="data:image/webp;base64,__LOGO_B64__" alt="Khoj logo — a roof, a lighthouse boat, a fishing trawler and a magnifying glass over the word খোঁজ">
+      <div class="brand-name">খোঁজ · Khoj<small>Chattogram rent board</small></div>
+    </div>
+    <nav class="top-actions">
+      <a href="#board" class="nav-btn">See rates</a>
+      <button type="button" class="nav-btn solid" id="openPostTop">Post your rent</button>
+    </nav>
   </header>
 
-  <h1>What's today's rate for your area?</h1>
-  <p class="sub">Not what a broker quotes at the door. What people are actually paying, posted up by the people paying it — like a market rate board, for rent.</p>
+  <div class="hero">
+    <span class="motto bn">ভাড়া আগে, ভাবনা পরে।</span>
+    <h1>The going rate for rent, before you walk in the door.</h1>
+    <p class="promise">Search an area. See what people actually pay. Walk into the negotiation already knowing the number.</p>
+    <p class="explainer"><strong>Khoj isn't a property marketplace.</strong> There are no flats to browse and no ads to click. It's a board where renters anonymously post what they actually pay each month — so the next person can search an area and see a realistic range before they ever contact a landlord or broker.</p>
 
-  <div class="board">
-    <div class="board-title">on the board right now</div>
-    <div class="board-stats">
-      <div class="board-stat"><span class="num" id="statCount">0</span><span class="lbl">rates posted</span></div>
-      <div class="board-stat"><span class="num" id="statAreas">0</span><span class="lbl">areas covered</span></div>
-      <div class="board-stat"><span class="num" id="statHidden">0</span><span class="lbl">flag a hidden charge</span></div>
+    <div class="search-panel" id="board">
+      <div class="search-label bn">এলাকা খুঁজুন — search an area</div>
+      <div class="search-box">
+        <input type="text" id="areaSearch" placeholder="Khulshi, GEC, Nasirabad, Panchlaish…" autocomplete="off">
+        <button type="button" id="searchBtn">Search</button>
+      </div>
+      <div class="suggest-list" id="suggestList"></div>
+      <div class="search-examples">Try Khulshi, GEC Circle, Nasirabad, Panchlaish, Agrabad, Halishahar…</div>
+    </div>
+
+    <div class="cta-row">
+      <button type="button" class="btn-post" id="openPostHero">Post your rent</button>
+      <span class="post-conditions">No account. No phone number. No exact address. Under a minute.</span>
     </div>
   </div>
 
-  <section class="block">
-    <div class="block-head">
-      <h2>Cheapest to priciest</h2>
-      <p>Median rent per area, with the reported range and how many rates it's based on.</p>
+  <div class="board">
+    <div class="board-title bn">এখন বোর্ডে যা আছে — on the board right now</div>
+    <div class="board-stats">
+      <div class="board-stat"><span class="num" id="statCount">0</span><span class="lbl">rates posted</span></div>
+      <div class="board-stat"><span class="num" id="statAreas">0</span><span class="lbl">areas covered</span></div>
+      <div class="board-stat"><span class="num" id="statHidden">0</span><span class="lbl">hidden charges flagged</span></div>
     </div>
-    <div class="tags-row" id="ladder"></div>
-  </section>
+  </div>
 
-  <section class="block" id="listingsBlock">
-    <div class="block-head">
-      <h2>Every rate on the board</h2>
-      <p>Search an area, or browse the whole stall. Tap "still this rate?" to keep an entry fresh, or flag one that looks wrong.</p>
-    </div>
-    <div class="search-row">
-      <input type="text" id="areaSearch" placeholder="Nasirabad, GEC, Khulshi…">
-    </div>
-    <p class="search-hint">Leave it blank to see everything.</p>
-    <div id="listings"></div>
-  </section>
+  <!-- ================= LANDING VIEW ================= -->
+  <div id="landingView">
+    <section class="block">
+      <div class="block-head">
+        <h2>Cheapest to priciest</h2>
+        <p>Median rent per area right now. Tap one to see the full picture.</p>
+      </div>
+      <div class="tags-row" id="ladder"></div>
+    </section>
 
-  <section class="block">
-    <div class="block-head">
-      <h2>Post your own rate</h2>
-      <p>Under a minute. No name, no phone number, nothing that identifies you.</p>
+    <div class="belief">
+      <p>Rent shouldn't be a guessing game.</p>
+      <p>Your landlord knows the market. Your broker knows the market. Your neighbors know the market. Now you can too.</p>
     </div>
-    <form id="reportForm">
-      <div class="field-row">
-        <div class="field">
-          <label for="f-area">Area</label>
-          <input type="text" id="f-area" placeholder="Nasirabad, Road 4" required>
-        </div>
-        <div class="field">
-          <label for="f-type">Place type</label>
-          <select id="f-type">
-            <option>Flat</option>
-            <option>Room / single unit</option>
-            <option>Sublet</option>
-            <option>House (full)</option>
-          </select>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label for="f-rooms">Bedrooms</label>
-          <select id="f-rooms">
-            <option>1</option>
-            <option selected>2</option>
-            <option>3</option>
-            <option>4+</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="f-rent">Monthly rent (Tk)</label>
-          <input type="text" id="f-rent" placeholder="18000" inputmode="numeric" required>
-        </div>
-        <div class="field">
-          <label for="f-advance">Advance (months)</label>
-          <input type="text" id="f-advance" placeholder="3" inputmode="numeric">
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label for="f-hidden">Hidden or extra charge, if any</label>
-          <input type="text" id="f-hidden" placeholder="e.g. Tk 1,500/month 'gas line' fee">
-        </div>
-        <div class="field">
-          <label for="f-year">Year you moved in</label>
-          <input type="text" id="f-year" placeholder="2025" inputmode="numeric">
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label for="f-note">Anything else worth knowing</label>
-          <textarea id="f-note" placeholder="Landlord raised rent mid-lease, building has a generator, water pressure is bad in the dry season…"></textarea>
-        </div>
-      </div>
-      <button type="submit" class="submit-btn">Post this rate</button>
-      <div class="status-msg" id="statusMsg" role="status"></div>
-    </form>
-  </section>
+  </div>
+
+  <!-- ================= AREA PAGE ================= -->
+  <div class="area-page" id="areaPage">
+    <button type="button" class="back-link" id="backToLanding">‹ back to all areas</button>
+
+    <div class="area-header">
+      <h2 id="areaName">—</h2>
+      <span class="freshness" id="areaFreshness"></span>
+    </div>
+
+    <div class="stat-strip" id="areaStatStrip"></div>
+
+    <div class="filter-row">
+      <select id="filterBed">
+        <option value="">All bedrooms</option>
+        <option value="1">1 bed</option>
+        <option value="2">2 bed</option>
+        <option value="3">3 bed</option>
+        <option value="4+">4+ bed</option>
+      </select>
+      <select id="filterType">
+        <option value="">All property types</option>
+        <option>Flat</option>
+        <option>Room / single unit</option>
+        <option>Sublet</option>
+        <option>House (full)</option>
+      </select>
+    </div>
+
+    <div class="dist-wrap" id="distWrap"></div>
+
+    <div id="areaListings"></div>
+
+    <div class="cta-row" style="margin-top:22px;">
+      <button type="button" class="btn-post" id="openPostFromArea">Post your rent here</button>
+    </div>
+  </div>
 
   <div class="about">
     <h3>How to read the numbers</h3>
     <ul>
       <li>Every rate shows how long ago it was last confirmed. Anything past 6 months is marked as possibly outdated — rent drifts, and we'd rather say so than pretend it hasn't.</li>
-      <li>Area prices are shown as a range built from recent, un-flagged reports, not one exact figure — real markets are ranges, not single numbers.</li>
-      <li>Rates that sit far outside an area's usual range, or get flagged by several visitors, are kept visible but excluded from that area's median so a few odd entries can't skew it.</li>
-      <li>This board isn't cross-checked against every listing site automatically — treat it as a strong starting point for negotiation, not a verified appraisal.</li>
+      <li>The "typical rent" for an area is a median built from recent, un-flagged reports, not one exact figure — real markets are ranges, not single numbers.</li>
+      <li>Entries that sit far outside an area's usual range, or get flagged by several visitors, stay visible but are left out of that area's median so a handful of odd entries can't skew it.</li>
+      <li>Nothing here is verified against a lease or a landlord. Treat it as a strong starting point for negotiation, not an appraisal.</li>
     </ul>
   </div>
 
   <footer>
-    Khoj is an independent, unverified board — every rate is self-reported and not checked against a lease or a landlord. It exists to give renters a rough sense of what's normal before they negotiate, not to make a claim about any specific building or owner.
+    <span class="fmark bn">খোঁজ</span>
+    Khoj is an independent, unverified, anonymous board for Chattogram renters. Every rate is self-reported — we don't check it against a lease, an owner, or a listing site. It exists to give the next renter a realistic sense of what's normal before they negotiate, not to make a claim about any specific building or owner. Reports that are flagged repeatedly are kept visible but marked, never silently deleted.
   </footer>
 
+</div>
+
+<!-- ================= POST MODAL ================= -->
+<div class="post-modal-backdrop" id="postBackdrop">
+  <div class="post-modal">
+    <button type="button" class="post-close" id="postClose" aria-label="Close">×</button>
+    <div class="step-progress">
+      <div class="step-dot" data-dot="1"></div>
+      <div class="step-dot" data-dot="2"></div>
+      <div class="step-dot" data-dot="3"></div>
+      <div class="step-dot" data-dot="4"></div>
+    </div>
+    <div class="step-label" id="stepLabel">Step 1 of 4</div>
+
+    <form id="reportForm">
+      <!-- Step 1: where -->
+      <div class="step-pane active" data-step="1">
+        <h3 class="step-title">Where's this?</h3>
+        <p class="step-sub">Just the area or neighborhood — never the building or road number.</p>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-area">Area</label>
+            <input type="text" id="f-area" placeholder="e.g. Nasirabad" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-type">Property type</label>
+            <select id="f-type">
+              <option>Flat</option>
+              <option>Room / single unit</option>
+              <option>Sublet</option>
+              <option>House (full)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: the numbers -->
+      <div class="step-pane" data-step="2">
+        <h3 class="step-title">The numbers</h3>
+        <p class="step-sub">What you actually pay each month.</p>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-rooms">Bedrooms</label>
+            <select id="f-rooms">
+              <option>1</option>
+              <option selected>2</option>
+              <option>3</option>
+              <option>4+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-rent">Monthly rent (Tk)</label>
+            <input type="text" id="f-rent" placeholder="18000" inputmode="numeric" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-size">Size in sqft (optional)</label>
+            <input type="text" id="f-size" placeholder="900" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="f-furnish">Furnishing</label>
+            <select id="f-furnish">
+              <option value="">Not sure / skip</option>
+              <option>Unfurnished</option>
+              <option>Semi-furnished</option>
+              <option>Furnished</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: advance & extra charges -->
+      <div class="step-pane" data-step="3">
+        <h3 class="step-title">Advance &amp; extra charges</h3>
+        <p class="step-sub">This is the part landlords never lead with.</p>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-advance">Advance (months)</label>
+            <input type="text" id="f-advance" placeholder="3" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="f-service">Service charge / month (Tk)</label>
+            <input type="text" id="f-service" placeholder="800" inputmode="numeric">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-hidden">Any hidden or surprise charge?</label>
+            <input type="text" id="f-hidden" placeholder="e.g. Tk 1,500/mo 'gas line' fee">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: note + submit -->
+      <div class="step-pane" data-step="4">
+        <h3 class="step-title">Anything else?</h3>
+        <p class="step-sub">Optional — skip it if you want.</p>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-note">Worth knowing, no identifying details</label>
+            <textarea id="f-note" placeholder="Landlord raised rent mid-lease, generator on site, low water pressure in the dry season…"></textarea>
+          </div>
+        </div>
+        <div class="anon-note">This stays anonymous. No name, no phone number, no exact address — ever.</div>
+      </div>
+
+      <div class="step-actions">
+        <button type="button" class="btn-ghost" id="stepBack">Back</button>
+        <button type="button" class="btn-next" id="stepNext">Next</button>
+        <button type="submit" class="btn-next" id="stepSubmit" style="display:none;">Put it on the board</button>
+      </div>
+      <div class="status-msg" id="statusMsg" role="status"></div>
+    </form>
+  </div>
 </div>
 
 <script>
 const NOW = new Date();
 
 const SEED = [
-  {id:"seed-1", area:"Nasirabad", type:"Flat", rooms:"2", rent:16000, advance:3, hidden:"", year:2024, note:"", asOf:"2026-08-01", flagCount:0},
-  {id:"seed-2", area:"Nasirabad", type:"Flat", rooms:"3", rent:22000, advance:4, hidden:"Tk 1,200/mo 'gas line' charge", year:2023, note:"", asOf:"2025-01-15", flagCount:0},
-  {id:"seed-3", area:"Nasirabad", type:"Room / single unit", rooms:"1", rent:7500, advance:2, hidden:"", year:2025, note:"Shared rooftop tank, low pressure in dry season", asOf:"2026-08-25", flagCount:0},
-  {id:"seed-4", area:"Panchlaish", type:"Flat", rooms:"2", rent:19000, advance:3, hidden:"", year:2024, note:"", asOf:"2026-03-01", flagCount:0},
-  {id:"seed-5", area:"Panchlaish", type:"Flat", rooms:"3", rent:27000, advance:6, hidden:"'House tuning' fee Tk 15,000 one-time", year:2022, note:"Advance never returned on exit", asOf:"2024-05-01", flagCount:0},
-  {id:"seed-6", area:"Khulshi", type:"Flat", rooms:"3", rent:35000, advance:4, hidden:"", year:2024, note:"", asOf:"2026-07-01", flagCount:0},
-  {id:"seed-7", area:"GEC Circle", type:"Flat", rooms:"2", rent:21000, advance:3, hidden:"Tk 800/mo lift maintenance", year:2025, note:"", asOf:"2026-08-10", flagCount:0},
-  {id:"seed-8", area:"Agrabad", type:"Flat", rooms:"2", rent:15000, advance:2, hidden:"", year:2023, note:"", asOf:"2025-02-01", flagCount:0},
-  {id:"seed-9", area:"Agrabad", type:"House (full)", rooms:"4+", rent:42000, advance:6, hidden:"", year:2021, note:"", asOf:"2023-09-01", flagCount:0},
-  {id:"seed-10", area:"Halishahar", type:"Flat", rooms:"2", rent:13500, advance:3, hidden:"", year:2024, note:"", asOf:"2026-06-15", flagCount:0},
+  {id:"seed-1", area:"Nasirabad", type:"Flat", rooms:"2", rent:16000, advance:3, service:700, hidden:"", furnish:"Semi-furnished", size:850, note:"", asOf:"2026-08-01", flagCount:0},
+  {id:"seed-2", area:"Nasirabad", type:"Flat", rooms:"3", rent:22000, advance:4, service:900, hidden:"Tk 1,200/mo 'gas line' charge", furnish:"Unfurnished", size:1100, note:"", asOf:"2025-01-15", flagCount:0},
+  {id:"seed-3", area:"Nasirabad", type:"Room / single unit", rooms:"1", rent:7500, advance:2, service:0, hidden:"", furnish:"Furnished", size:220, note:"Shared rooftop tank, low pressure in dry season", asOf:"2026-08-25", flagCount:0},
+  {id:"seed-4", area:"Panchlaish", type:"Flat", rooms:"2", rent:19000, advance:3, service:750, hidden:"", furnish:"Unfurnished", size:900, note:"", asOf:"2026-03-01", flagCount:0},
+  {id:"seed-5", area:"Panchlaish", type:"Flat", rooms:"3", rent:27000, advance:6, service:1200, hidden:"'House tuning' fee Tk 15,000 one-time", furnish:"Semi-furnished", size:1250, note:"Advance never returned on exit", asOf:"2024-05-01", flagCount:0},
+  {id:"seed-6", area:"Khulshi", type:"Flat", rooms:"3", rent:35000, advance:4, service:1500, hidden:"", furnish:"Furnished", size:1450, note:"", asOf:"2026-07-01", flagCount:0},
+  {id:"seed-7", area:"GEC Circle", type:"Flat", rooms:"2", rent:21000, advance:3, service:800, hidden:"Tk 800/mo lift maintenance", furnish:"Semi-furnished", size:950, note:"", asOf:"2026-08-10", flagCount:0},
+  {id:"seed-8", area:"Agrabad", type:"Flat", rooms:"2", rent:15000, advance:2, service:500, hidden:"", furnish:"Unfurnished", size:800, note:"", asOf:"2025-02-01", flagCount:0},
+  {id:"seed-9", area:"Agrabad", type:"House (full)", rooms:"4+", rent:42000, advance:6, service:0, hidden:"", furnish:"Unfurnished", size:2200, note:"", asOf:"2023-09-01", flagCount:0},
+  {id:"seed-10", area:"Halishahar", type:"Flat", rooms:"2", rent:13500, advance:3, service:600, hidden:"", furnish:"Unfurnished", size:820, note:"", asOf:"2026-06-15", flagCount:0},
 ];
 
-const STORAGE_KEY = "khoj-reports-v4";
+const STORAGE_KEY = "khoj-reports-v5";
 const LAST_SUBMIT_KEY = "khoj-last-submit";
 const FLAGGED_KEY = "khoj-flagged-ids";
 const SUBMIT_COOLDOWN_MS = 90 * 1000;
+const BLOCKED_WORDS = ["http://","https://","www.",".com","@"]; // strip obvious spam/contact-info attempts
 
 let allReports = [];
+let currentArea = null;
+let currentStep = 1;
+const TOTAL_STEPS = 4;
 
+/* ---------- helpers ---------- */
 function fmtTk(n){
   n = Number(n);
   if(isNaN(n)) return "—";
   return "Tk " + n.toLocaleString('en-IN');
 }
-
 function monthsAgo(dateStr){
   const d = new Date(dateStr);
   if(isNaN(d)) return 999;
   return Math.floor((NOW - d) / (1000*60*60*24*30));
 }
-
 function ageLabel(dateStr){
   const m = monthsAgo(dateStr);
   if(m <= 0) return "confirmed this month";
   if(m === 1) return "confirmed 1 mo ago";
   return "confirmed " + m + " mo ago";
 }
-
 function groupByArea(reports){
   const map = {};
   reports.forEach(r=>{
@@ -514,13 +807,11 @@ function groupByArea(reports){
   });
   return map;
 }
-
 function median(nums){
   const s = [...nums].sort((a,b)=>a-b);
   const mid = Math.floor(s.length/2);
   return s.length % 2 ? s[mid] : Math.round((s[mid-1]+s[mid])/2);
 }
-
 function areaStats(items){
   const reliable = items.filter(r => (r.flagCount||0) < 3);
   const base = reliable.length ? reliable : items;
@@ -538,35 +829,18 @@ function areaStats(items){
     count: items.length
   };
 }
-
 function isOutlierRent(rent, stats, sampleSize){
   if(sampleSize < 3) return false;
   return rent > stats.median*2.5 || rent < stats.median*0.4;
 }
-
-function renderTags(){
-  const grouped = groupByArea(allReports);
-  const rows = Object.keys(grouped).map(area=>{
-    const stats = areaStats(grouped[area]);
-    return { area, stats };
-  }).sort((a,b)=>a.stats.median-b.stats.median);
-
-  const ladderEl = document.getElementById('ladder');
-  ladderEl.innerHTML = "";
-
-  rows.forEach((row, i)=>{
-    const el = document.createElement('div');
-    el.className = 'tag';
-    el.innerHTML =
-      '<div class="rank">#' + (i+1) + '</div>' +
-      '<div class="area">' + escapeHtml(row.area) + '</div>' +
-      '<div class="price">' + fmtTk(row.stats.median) + '</div>' +
-      '<div class="range">' + fmtTk(row.stats.min) + '–' + fmtTk(row.stats.max) + '</div>' +
-      '<div class="count">based on ' + row.stats.count + ' report' + (row.stats.count===1?'':'s') + '</div>';
-    ladderEl.appendChild(el);
-  });
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
 }
-
+function makeId(){
+  return 'r-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,7);
+}
 function animateCount(el, target){
   const dur = 700;
   const start = performance.now();
@@ -577,7 +851,6 @@ function animateCount(el, target){
   }
   requestAnimationFrame(tick);
 }
-
 async function getFlaggedIds(){
   try{
     const r = await window.storage.get(FLAGGED_KEY, false);
@@ -585,73 +858,217 @@ async function getFlaggedIds(){
   }catch(e){ return []; }
 }
 
-function render(filterText){
-  const filter = (filterText||"").trim().toLowerCase();
-  const filtered = filter
-    ? allReports.filter(r=>r.area.toLowerCase().includes(filter))
-    : allReports;
-
+/* ---------- global stats ---------- */
+function renderGlobalStats(){
   animateCount(document.getElementById('statCount'), allReports.length);
   animateCount(document.getElementById('statAreas'), Object.keys(groupByArea(allReports)).length);
   animateCount(document.getElementById('statHidden'), allReports.filter(r=>r.hidden && r.hidden.trim()).length);
+}
 
-  const listEl = document.getElementById('listings');
-  listEl.innerHTML = "";
+/* ---------- ladder (landing) ---------- */
+function renderLadder(){
+  const grouped = groupByArea(allReports);
+  const rows = Object.keys(grouped).map(area=>{
+    const stats = areaStats(grouped[area]);
+    return { area, stats };
+  }).sort((a,b)=>a.stats.median-b.stats.median);
 
-  if(filtered.length === 0){
-    listEl.innerHTML = '<p class="empty">Nothing posted here yet. Be the first to add a rate below.</p>';
+  const ladderEl = document.getElementById('ladder');
+  ladderEl.innerHTML = "";
+
+  rows.forEach((row, i)=>{
+    const el = document.createElement('button');
+    el.type = "button";
+    el.className = 'tag';
+    el.innerHTML =
+      '<div class="rank">#' + (i+1) + '</div>' +
+      '<div class="area">' + escapeHtml(row.area) + '</div>' +
+      '<div class="price">' + fmtTk(row.stats.median) + '</div>' +
+      '<div class="range">' + fmtTk(row.stats.min) + '–' + fmtTk(row.stats.max) + '</div>' +
+      '<div class="count">based on ' + row.stats.count + ' report' + (row.stats.count===1?'':'s') + '</div>';
+    el.addEventListener('click', ()=>goToArea(row.area));
+    ladderEl.appendChild(el);
+  });
+}
+
+/* ---------- search / suggestions ---------- */
+function knownAreas(){
+  return Object.keys(groupByArea(allReports)).sort();
+}
+function renderSuggestions(query){
+  const list = document.getElementById('suggestList');
+  const q = query.trim().toLowerCase();
+  if(!q){ list.classList.remove('open'); list.innerHTML=""; return; }
+  const grouped = groupByArea(allReports);
+  const matches = knownAreas().filter(a=>a.toLowerCase().includes(q));
+  list.innerHTML = "";
+  matches.slice(0,8).forEach(a=>{
+    const stats = areaStats(grouped[a]);
+    const item = document.createElement('div');
+    item.className = 'suggest-item';
+    item.innerHTML = '<span>' + escapeHtml(a) + '</span><span class="n">' + stats.count + ' report' + (stats.count===1?'':'s') + '</span>';
+    item.addEventListener('click', ()=>{
+      document.getElementById('areaSearch').value = a;
+      goToArea(a);
+    });
+    list.appendChild(item);
+  });
+  if(!matches.length){
+    const item = document.createElement('div');
+    item.className = 'suggest-item';
+    item.innerHTML = '<span>Search "' + escapeHtml(query.trim()) + '"</span><span class="n">no reports yet</span>';
+    item.addEventListener('click', ()=>goToArea(query.trim()));
+    list.appendChild(item);
+  }
+  list.classList.add('open');
+}
+
+function goToArea(areaName){
+  currentArea = areaName.trim();
+  document.getElementById('suggestList').classList.remove('open');
+  document.getElementById('landingView').style.display = 'none';
+  document.getElementById('areaPage').classList.add('open');
+  renderAreaPage();
+  document.getElementById('board').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function backToLanding(){
+  currentArea = null;
+  document.getElementById('areaPage').classList.remove('open');
+  document.getElementById('landingView').style.display = '';
+  document.getElementById('areaSearch').value = "";
+}
+
+/* ---------- area page ---------- */
+function currentFilters(){
+  return {
+    bed: document.getElementById('filterBed').value,
+    type: document.getElementById('filterType').value
+  };
+}
+
+function renderDistribution(items){
+  const wrap = document.getElementById('distWrap');
+  if(items.length < 2){ wrap.innerHTML = ""; return; }
+  const rents = items.map(r=>r.rent).sort((a,b)=>a-b);
+  const min = rents[0], max = rents[rents.length-1];
+  const bucketCount = Math.min(5, Math.max(3, Math.ceil(items.length/3)));
+  const span = Math.max(1, max - min);
+  const bucketSize = Math.ceil(span / bucketCount);
+  const buckets = new Array(bucketCount).fill(0);
+  rents.forEach(r=>{
+    let idx = bucketSize ? Math.floor((r - min) / bucketSize) : 0;
+    if(idx >= bucketCount) idx = bucketCount - 1;
+    buckets[idx]++;
+  });
+  const maxCount = Math.max(...buckets);
+  let html = '<div class="dist-title">how rents are spread across ' + items.length + ' report' + (items.length===1?'':'s') + '</div><div class="dist-bars">';
+  buckets.forEach((c,i)=>{
+    const lo = min + i*bucketSize;
+    const hi = i === bucketCount-1 ? max : lo + bucketSize - 1;
+    const pct = maxCount ? Math.max(4, Math.round((c/maxCount)*100)) : 4;
+    html += '<div class="dist-bar"><span class="bn">' + c + '</span><div class="fill' + (c===0?' zero':'') + '" style="height:' + pct + '%"></div><span class="bl">' + fmtTk(lo).replace('Tk ','') + '–' + fmtTk(hi).replace('Tk ','') + '</span></div>';
+  });
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+function renderAreaPage(){
+  const grouped = groupByArea(allReports);
+  const items = grouped[currentArea] || [];
+  document.getElementById('areaName').textContent = currentArea;
+
+  if(items.length === 0){
+    document.getElementById('areaFreshness').textContent = "";
+    document.getElementById('areaStatStrip').innerHTML = "";
+    document.getElementById('distWrap').innerHTML = "";
+    document.getElementById('areaListings').innerHTML =
+      '<div class="empty-state">' +
+        '<div class="headline">Nobody\\'s chalked ' + escapeHtml(currentArea) + ' yet.</div>' +
+        '<p>Be the first renter to put the rate on the board — it takes under a minute and stays anonymous.</p>' +
+        '<button type="button" class="btn-post" id="emptyStatePost">Post the first rate</button>' +
+      '</div>';
+    document.getElementById('emptyStatePost').addEventListener('click', ()=>openPostModal(currentArea));
     return;
   }
 
-  const grouped = groupByArea(filtered);
-  const areaNames = Object.keys(grouped).sort();
+  const stats = areaStats(items);
+  const mostRecent = items.reduce((acc,r)=> monthsAgo(r.asOf) < monthsAgo(acc.asOf) ? r : acc, items[0]);
+  document.getElementById('areaFreshness').textContent = "most recent report: " + ageLabel(mostRecent.asOf);
+
+  document.getElementById('areaStatStrip').innerHTML =
+    '<div class="stat-cell"><div class="v">' + fmtTk(stats.median) + '</div><div class="l">typical rent</div></div>' +
+    '<div class="stat-cell"><div class="v">' + fmtTk(stats.min) + '–' + fmtTk(stats.max) + '</div><div class="l">reported range</div></div>' +
+    '<div class="stat-cell"><div class="v">' + stats.count + '</div><div class="l">report' + (stats.count===1?'':'s') + ' on file</div></div>';
+
+  const filters = currentFilters();
+  const filtered = items.filter(r=>{
+    if(filters.bed && r.rooms !== filters.bed) return false;
+    if(filters.type && r.type !== filters.type) return false;
+    return true;
+  });
+
+  renderDistribution(filtered.length ? filtered : items);
+
+  const listEl = document.getElementById('areaListings');
+  listEl.innerHTML = "";
+
+  if(filtered.length === 0){
+    listEl.innerHTML = '<div class="empty-state"><div class="headline">No reports match those filters.</div><p>Try widening the bedroom or property type filter, or post one yourself.</p></div>';
+    return;
+  }
 
   getFlaggedIds().then(flaggedByMe=>{
-    areaNames.forEach(area=>{
-      const items = grouped[area];
-      const stats = areaStats(items);
-      const stall = document.createElement('div');
-      stall.className = 'stall';
-      stall.innerHTML =
-        '<div class="stall-name">' + escapeHtml(area) + '</div>' +
-        '<div class="stall-summary">median ' + fmtTk(stats.median) + ' · range ' + fmtTk(stats.min) + '–' + fmtTk(stats.max) + ' · ' + stats.count + ' report' + (stats.count===1?'':'s') + '</div>';
+    const stall = document.createElement('div');
+    stall.className = 'stall';
 
-      items.forEach(r=>{
-        const outdated = monthsAgo(r.asOf) >= 6;
-        const outlier = isOutlierRent(r.rent, stats, items.length);
-        const heavilyFlagged = (r.flagCount||0) >= 3;
+    const sorted = [...filtered].sort((a,b)=> new Date(b.asOf) - new Date(a.asOf));
 
-        const row = document.createElement('div');
-        row.className = 'listing';
-        row.innerHTML =
-          '<span class="desc">' + escapeHtml(r.type) + ', ' + escapeHtml(r.rooms) + ' bed' + (r.advance ? ' · advance ' + escapeHtml(String(r.advance)) + ' mo' : '') + '</span>' +
-          '<span class="price">' + fmtTk(r.rent) + '/mo</span>';
-        stall.appendChild(row);
+    sorted.forEach(r=>{
+      const outdated = monthsAgo(r.asOf) >= 6;
+      const outlier = isOutlierRent(r.rent, stats, items.length);
+      const heavilyFlagged = (r.flagCount||0) >= 3;
 
-        const noteBits = [];
-        if(r.hidden && r.hidden.trim()) noteBits.push('<span class="flag">' + escapeHtml(r.hidden) + '</span>');
-        if(r.note && r.note.trim()) noteBits.push(escapeHtml(r.note));
-        if(outlier) noteBits.push('<span class="flagged-note">far from this area\\'s usual range — worth double-checking</span>');
-        if(heavilyFlagged) noteBits.push('<span class="flagged-note">flagged by several visitors</span>');
-        if(noteBits.length){
-          const note = document.createElement('div');
-          note.className = 'listing-note';
-          note.innerHTML = noteBits.join(' · ');
-          stall.appendChild(note);
-        }
+      const metaBits = [r.type, r.rooms + ' bed'];
+      if(r.size) metaBits.push(r.size + ' sqft');
+      if(r.furnish) metaBits.push(r.furnish);
+      if(r.advance) metaBits.push('advance ' + r.advance + ' mo');
+      if(r.service) metaBits.push('service ' + fmtTk(r.service) + '/mo');
 
-        const actions = document.createElement('div');
-        actions.className = 'listing-actions';
-        const alreadyFlagged = flaggedByMe.includes(r.id);
-        actions.innerHTML =
-          '<span class="asof' + (outdated ? ' outdated' : '') + '">' + ageLabel(r.asOf) + (outdated ? ' · may be outdated' : '') + '</span>' +
-          '<button type="button" class="mini-btn" data-action="confirm" data-id="' + r.id + '">still this rate?</button>' +
-          '<button type="button" class="mini-btn" data-action="flag" data-id="' + r.id + '"' + (alreadyFlagged ? ' disabled' : '') + '>' + (alreadyFlagged ? 'flagged' : 'looks off') + '</button>';
-        stall.appendChild(actions);
-      });
-      listEl.appendChild(stall);
+      const row = document.createElement('div');
+      row.className = 'listing';
+      row.innerHTML =
+        '<span class="desc">' + escapeHtml(metaBits[0]) + ', ' + escapeHtml(metaBits[1]) + '</span>' +
+        '<span class="price">' + fmtTk(r.rent) + '/mo</span>';
+      stall.appendChild(row);
+
+      const meta = document.createElement('div');
+      meta.className = 'listing-meta';
+      meta.textContent = metaBits.slice(2).join(' · ');
+      if(metaBits.slice(2).length) stall.appendChild(meta);
+
+      const noteBits = [];
+      if(r.hidden && r.hidden.trim()) noteBits.push('<span class="flag">' + escapeHtml(r.hidden) + '</span>');
+      if(r.note && r.note.trim()) noteBits.push(escapeHtml(r.note));
+      if(outlier) noteBits.push('<span class="flagged-note">far from this area\\'s usual range — worth double-checking</span>');
+      if(heavilyFlagged) noteBits.push('<span class="flagged-note">flagged by several visitors</span>');
+      if(noteBits.length){
+        const note = document.createElement('div');
+        note.className = 'listing-note';
+        note.innerHTML = noteBits.join(' · ');
+        stall.appendChild(note);
+      }
+
+      const actions = document.createElement('div');
+      actions.className = 'listing-actions';
+      const alreadyFlagged = flaggedByMe.includes(r.id);
+      actions.innerHTML =
+        '<span class="asof' + (outdated ? ' outdated' : '') + '">' + ageLabel(r.asOf) + (outdated ? ' · may be outdated' : '') + '</span>' +
+        '<button type="button" class="mini-btn" data-action="confirm" data-id="' + r.id + '">still this rate?</button>' +
+        '<button type="button" class="mini-btn" data-action="flag" data-id="' + r.id + '"' + (alreadyFlagged ? ' disabled' : '') + '>' + (alreadyFlagged ? 'flagged' : 'looks off') + '</button>';
+      stall.appendChild(actions);
     });
 
+    listEl.appendChild(stall);
     listEl.querySelectorAll('.mini-btn').forEach(btn=>{
       btn.addEventListener('click', onMiniAction);
     });
@@ -674,16 +1091,16 @@ async function onMiniAction(e){
     const flagged = await getFlaggedIds();
     flagged.push(id);
     try{
-      const cur = await window.storage.get(FLAGGED_KEY, false).catch(()=>null);
       await window.storage.set(FLAGGED_KEY, JSON.stringify(flagged), false);
     }catch(err){}
   }
-  renderTags();
-  render(document.getElementById('areaSearch').value);
+  renderGlobalStats();
+  renderLadder();
+  if(currentArea) renderAreaPage();
 }
 
 async function persistUpdate(id, patch){
-  if(id.startsWith('seed-')) return; // seed rows only update in-memory for this session
+  if(id.startsWith('seed-')) return;
   try{
     const result = await window.storage.get(STORAGE_KEY, true);
     let stored = result && result.value ? JSON.parse(result.value) : [];
@@ -692,63 +1109,120 @@ async function persistUpdate(id, patch){
   }catch(e){}
 }
 
-function escapeHtml(str){
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
-}
-
-function makeId(){
-  return 'r-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,7);
-}
-
+/* ---------- load / save ---------- */
 async function loadReports(){
   let stored = [];
   try{
     const result = await window.storage.get(STORAGE_KEY, true);
-    if(result && result.value){
-      stored = JSON.parse(result.value);
-    }
-  }catch(e){
-    stored = [];
-  }
+    if(result && result.value) stored = JSON.parse(result.value);
+  }catch(e){ stored = []; }
   allReports = SEED.concat(stored);
-  renderTags();
-  render("");
+  renderGlobalStats();
+  renderLadder();
 }
 
 async function saveReport(report){
   let stored = [];
   try{
     const result = await window.storage.get(STORAGE_KEY, true);
-    if(result && result.value){
-      stored = JSON.parse(result.value);
-    }
-  }catch(e){
-    stored = [];
-  }
+    if(result && result.value) stored = JSON.parse(result.value);
+  }catch(e){ stored = []; }
+
+  // duplicate detection: same area + rent + bedrooms posted very recently
+  const isDup = stored.some(r =>
+    r.area.trim().toLowerCase() === report.area.trim().toLowerCase() &&
+    r.rent === report.rent &&
+    r.rooms === report.rooms &&
+    (Date.now() - new Date(r.asOf).getTime()) < 24*60*60*1000
+  );
+  if(isDup) throw new Error('duplicate');
+
   stored.push(report);
   await window.storage.set(STORAGE_KEY, JSON.stringify(stored), true);
   return stored;
 }
 
-document.getElementById('areaSearch').addEventListener('input', (e)=>{
-  render(e.target.value);
+function containsBlockedContent(text){
+  const t = (text||"").toLowerCase();
+  return BLOCKED_WORDS.some(w => t.includes(w));
+}
+
+/* ---------- post modal / stepper ---------- */
+function openPostModal(prefillArea){
+  currentStep = 1;
+  document.getElementById('reportForm').reset();
+  document.getElementById('f-rooms').value = "2";
+  if(prefillArea) document.getElementById('f-area').value = prefillArea;
+  document.getElementById('statusMsg').textContent = "";
+  updateStepUI();
+  document.getElementById('postBackdrop').classList.add('open');
+}
+function closePostModal(){
+  document.getElementById('postBackdrop').classList.remove('open');
+}
+function updateStepUI(){
+  document.querySelectorAll('.step-pane').forEach(p=>{
+    p.classList.toggle('active', Number(p.dataset.step) === currentStep);
+  });
+  document.querySelectorAll('.step-dot').forEach(d=>{
+    const n = Number(d.dataset.dot);
+    d.classList.toggle('done', n < currentStep);
+    d.classList.toggle('current', n === currentStep);
+  });
+  document.getElementById('stepLabel').textContent = "Step " + currentStep + " of " + TOTAL_STEPS;
+  document.getElementById('stepBack').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+  document.getElementById('stepNext').style.display = currentStep === TOTAL_STEPS ? 'none' : 'inline-block';
+  document.getElementById('stepSubmit').style.display = currentStep === TOTAL_STEPS ? 'inline-block' : 'none';
+}
+function validateStep(step){
+  const statusMsg = document.getElementById('statusMsg');
+  statusMsg.textContent = "";
+  if(step === 1){
+    if(!document.getElementById('f-area').value.trim()){
+      statusMsg.textContent = "Which area is this? A neighborhood name is enough.";
+      return false;
+    }
+  }
+  if(step === 2){
+    const rentRaw = document.getElementById('f-rent').value.trim();
+    const rentNum = Number(rentRaw.replace(/[^0-9]/g,''));
+    if(!rentNum){
+      statusMsg.textContent = "Enter the rent as a number, like 18000.";
+      return false;
+    }
+  }
+  return true;
+}
+
+document.getElementById('stepNext').addEventListener('click', ()=>{
+  if(!validateStep(currentStep)) return;
+  currentStep = Math.min(TOTAL_STEPS, currentStep + 1);
+  updateStepUI();
 });
+document.getElementById('stepBack').addEventListener('click', ()=>{
+  currentStep = Math.max(1, currentStep - 1);
+  updateStepUI();
+});
+document.getElementById('postClose').addEventListener('click', closePostModal);
+document.getElementById('postBackdrop').addEventListener('click', (e)=>{
+  if(e.target.id === 'postBackdrop') closePostModal();
+});
+document.getElementById('openPostTop').addEventListener('click', ()=>openPostModal(currentArea));
+document.getElementById('openPostHero').addEventListener('click', ()=>openPostModal(currentArea));
+document.getElementById('openPostFromArea').addEventListener('click', ()=>openPostModal(currentArea));
 
 document.getElementById('reportForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
+  if(!validateStep(1) || !validateStep(2)) return;
+
   const statusMsg = document.getElementById('statusMsg');
   const area = document.getElementById('f-area').value.trim();
-  const rentRaw = document.getElementById('f-rent').value.trim();
+  const rentNum = Number(document.getElementById('f-rent').value.trim().replace(/[^0-9]/g,''));
+  const note = document.getElementById('f-note').value.trim();
+  const hidden = document.getElementById('f-hidden').value.trim();
 
-  if(!area || !rentRaw){
-    statusMsg.textContent = "Area and monthly rent are required.";
-    return;
-  }
-  const rentNum = Number(rentRaw.replace(/[^0-9]/g,''));
-  if(!rentNum){
-    statusMsg.textContent = "Enter the rent as a number, like 18000.";
+  if(containsBlockedContent(note) || containsBlockedContent(hidden)){
+    statusMsg.textContent = "Please remove links or contact info — reports stay anonymous, no exceptions.";
     return;
   }
 
@@ -769,10 +1243,12 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
     type: document.getElementById('f-type').value,
     rooms: document.getElementById('f-rooms').value,
     rent: rentNum,
+    size: Number(document.getElementById('f-size').value.trim().replace(/[^0-9]/g,'')) || 0,
+    furnish: document.getElementById('f-furnish').value,
     advance: document.getElementById('f-advance').value.trim(),
-    hidden: document.getElementById('f-hidden').value.trim(),
-    year: document.getElementById('f-year').value.trim(),
-    note: document.getElementById('f-note').value.trim(),
+    service: Number(document.getElementById('f-service').value.trim().replace(/[^0-9]/g,'')) || 0,
+    hidden: hidden,
+    note: note,
     asOf: new Date().toISOString().slice(0,10),
     flagCount: 0
   };
@@ -782,15 +1258,37 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
     await saveReport(report);
     await window.storage.set(LAST_SUBMIT_KEY, String(Date.now()), false).catch(()=>{});
     allReports.push(report);
-    renderTags();
-    render(document.getElementById('areaSearch').value);
-    e.target.reset();
-    document.getElementById('f-rooms').value = "2";
-    statusMsg.textContent = "Posted — now visible to everyone searching " + area + ".";
+    renderGlobalStats();
+    renderLadder();
+    closePostModal();
+    goToArea(area);
   }catch(err){
-    statusMsg.textContent = "Couldn't post that just now. Try again.";
+    if(err && err.message === 'duplicate'){
+      statusMsg.textContent = "Looks like this exact rate was already posted for " + area + " today.";
+    } else {
+      statusMsg.textContent = "Couldn't post that just now. Try again.";
+    }
   }
 });
+
+/* ---------- search wiring ---------- */
+const searchInput = document.getElementById('areaSearch');
+searchInput.addEventListener('input', (e)=> renderSuggestions(e.target.value));
+searchInput.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    if(searchInput.value.trim()) goToArea(searchInput.value.trim());
+  }
+});
+document.getElementById('searchBtn').addEventListener('click', ()=>{
+  if(searchInput.value.trim()) goToArea(searchInput.value.trim());
+});
+document.addEventListener('click', (e)=>{
+  if(!e.target.closest('.search-panel')) document.getElementById('suggestList').classList.remove('open');
+});
+document.getElementById('backToLanding').addEventListener('click', backToLanding);
+document.getElementById('filterBed').addEventListener('change', renderAreaPage);
+document.getElementById('filterType').addEventListener('change', renderAreaPage);
 
 loadReports();
 </script>
