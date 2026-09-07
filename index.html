@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khoj — the real rent in your area</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2ECDD;
+    --paper-raised:#EAE2CC;
+    --ink:#1F3A3D;
+    --ink-soft:#3E5457;
+    --mustard:#C98A2C;
+    --rust:#A23E2E;
+    --line:#D3C4A0;
+    --grey:#6B5D4F;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+
+  header{padding:48px 0 32px;}
+  .brand{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:22px;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  .brand span{color:var(--mustard);}
+  .place{font-size:13px;color:var(--grey);margin-top:2px;}
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-style:italic;
+    font-size:clamp(30px,5vw,44px);
+    line-height:1.12;
+    margin:28px 0 14px;
+    max-width:11ch;
+    color:var(--ink);
+  }
+  .sub{
+    font-size:16px;
+    color:var(--ink-soft);
+    max-width:46ch;
+    margin:0 0 28px;
+  }
+
+  .stat-line{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    padding:18px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    margin-bottom:32px;
+  }
+  .stat b{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+    display:block;
+    color:var(--ink);
+  }
+  .stat small{font-size:12px;color:var(--grey);}
+
+  .search-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  input[type=text], select{
+    font-family:'Work Sans', sans-serif;
+    font-size:15px;
+    padding:12px 14px;
+    border:1px solid var(--ink);
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:2px;
+  }
+  #areaSearch{flex:1;}
+  .search-hint{font-size:12px;color:var(--grey);margin:0 0 40px;}
+
+  section.block{margin-bottom:48px;}
+  .block-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:4px;
+  }
+  .block-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:20px;
+    margin:0;
+  }
+  .block-head .count{font-size:13px;color:var(--grey);}
+
+  .area-group{margin-top:28px;}
+  .area-name{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:17px;
+    color:var(--rust);
+    margin:0 0 10px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--line);
+  }
+  .entry{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap:2px 16px;
+    padding:12px 0;
+    border-bottom:1px dotted var(--line);
+    font-size:14.5px;
+  }
+  .entry:last-child{border-bottom:none;}
+  .entry .type{color:var(--ink);}
+  .entry .rent{
+    font-variant-numeric: tabular-nums;
+    font-weight:600;
+    color:var(--ink);
+    text-align:right;
+    white-space:nowrap;
+  }
+  .entry .meta{
+    grid-column: 1 / -1;
+    font-size:12.5px;
+    color:var(--grey);
+  }
+  .flag{color:var(--rust);}
+
+  .empty{
+    padding:24px 0;
+    color:var(--grey);
+    font-size:14.5px;
+    font-style:italic;
+  }
+
+  form{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    padding:24px;
+    border-radius:2px;
+  }
+  .field-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+  .field{flex:1;min-width:150px;display:flex;flex-direction:column;gap:5px;}
+  label{font-size:12.5px;color:var(--grey);}
+  input,select{width:100%;}
+  textarea{
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    padding:10px 12px;
+    border:1px solid var(--ink);
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:2px;
+    width:100%;
+    resize:vertical;
+    min-height:60px;
+  }
+  button{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:13px 22px;
+    border-radius:2px;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  button:hover{background:var(--ink-soft);}
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--mustard);
+    outline-offset:2px;
+  }
+  .status-msg{font-size:13px;margin-top:10px;color:var(--ink-soft);min-height:16px;}
+
+  footer{
+    padding:36px 0 60px;
+    border-top:1px solid var(--line);
+    font-size:12.5px;
+    color:var(--grey);
+    max-width:52ch;
+  }
+
+  @media (max-width:480px){
+    .field-row{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">খোঁজ <span>Khoj</span></div>
+    <div class="place">Chattogram, Bangladesh</div>
+  </header>
+
+  <h1>What's the real rent in your area?</h1>
+  <p class="sub">Not what a broker quotes you. What people actually pay, entered by the people paying it.</p>
+
+  <div class="stat-line">
+    <div class="stat"><b id="statCount">—</b><small>reports</small></div>
+    <div class="stat"><b id="statAreas">—</b><small>areas covered</small></div>
+    <div class="stat"><b id="statHidden">—</b><small>report a hidden charge</small></div>
+  </div>
+
+  <div class="search-row">
+    <input type="text" id="areaSearch" placeholder="Search an area — e.g. Nasirabad, GEC, Khulshi">
+  </div>
+  <p class="search-hint">Leave it blank to see everything on record.</p>
+
+  <section class="block" id="listingsBlock">
+    <div class="block-head">
+      <h2>On record</h2>
+      <span class="count" id="listCount"></span>
+    </div>
+    <div id="listings"></div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Add what you're paying</h2>
+    </div>
+    <p class="sub" style="margin-bottom:18px;">Takes under a minute. No name, no phone number, nothing that identifies you.</p>
+    <form id="reportForm">
+      <div class="field-row">
+        <div class="field">
+          <label for="f-area">Area</label>
+          <input type="text" id="f-area" placeholder="Nasirabad, Road 4" required>
+        </div>
+        <div class="field">
+          <label for="f-type">Place type</label>
+          <select id="f-type">
+            <option>Flat</option>
+            <option>Room / single unit</option>
+            <option>Sublet</option>
+            <option>House (full)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-rooms">Bedrooms</label>
+          <select id="f-rooms">
+            <option>1</option>
+            <option selected>2</option>
+            <option>3</option>
+            <option>4+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-rent">Monthly rent (Tk)</label>
+          <input type="text" id="f-rent" placeholder="18000" inputmode="numeric" required>
+        </div>
+        <div class="field">
+          <label for="f-advance">Advance (months)</label>
+          <input type="text" id="f-advance" placeholder="3" inputmode="numeric">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-hidden">Hidden or extra charge, if any</label>
+          <input type="text" id="f-hidden" placeholder="e.g. Tk 1,500/month 'gas line' fee">
+        </div>
+        <div class="field">
+          <label for="f-year">Year you moved in</label>
+          <input type="text" id="f-year" placeholder="2025" inputmode="numeric">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-note">Anything else worth knowing</label>
+          <textarea id="f-note" placeholder="Optional — e.g. landlord raised rent mid-lease, building has generator, etc."></textarea>
+        </div>
+      </div>
+      <button type="submit">Add this report</button>
+      <div class="status-msg" id="statusMsg"></div>
+    </form>
+  </section>
+
+  <footer>
+    Khoj is an independent, unverified public record — every entry is self-reported and not checked against a lease or landlord. It exists to give renters a rough sense of what's normal before they negotiate, not to make claims about any specific building or owner.
+  </footer>
+
+</div>
+
+<script>
+const SEED = [
+  {area:"Nasirabad", type:"Flat", rooms:"2", rent:16000, advance:3, hidden:"", year:2024, note:""},
+  {area:"Nasirabad", type:"Flat", rooms:"3", rent:22000, advance:4, hidden:"Tk 1,200/mo 'gas line' charge", year:2023, note:""},
+  {area:"Nasirabad", type:"Room / single unit", rooms:"1", rent:7500, advance:2, hidden:"", year:2025, note:"Shared rooftop water tank, low pressure in dry season"},
+  {area:"Panchlaish", type:"Flat", rooms:"2", rent:19000, advance:3, hidden:"", year:2024, note:""},
+  {area:"Panchlaish", type:"Flat", rooms:"3", rent:27000, advance:6, hidden:"'House tuning' fee Tk 15,000 one-time", year:2022, note:"Advance never returned on exit"},
+  {area:"Khulshi", type:"Flat", rooms:"3", rent:35000, advance:4, hidden:"", year:2024, note:""},
+  {area:"GEC Circle", type:"Flat", rooms:"2", rent:21000, advance:3, hidden:"Tk 800/mo lift maintenance", year:2025, note:""},
+  {area:"Agrabad", type:"Flat", rooms:"2", rent:15000, advance:2, hidden:"", year:2023, note:""},
+  {area:"Agrabad", type:"House (full)", rooms:"4+", rent:42000, advance:6, hidden:"", year:2021, note:""},
+  {area:"Halishahar", type:"Flat", rooms:"2", rent:13500, advance:3, hidden:"", year:2024, note:""},
+];
+
+const STORAGE_KEY = "khoj-reports-v1";
+let allReports = [];
+
+function fmtTk(n){
+  n = Number(n);
+  if(isNaN(n)) return "—";
+  return "Tk " + n.toLocaleString('en-IN');
+}
+
+function groupByArea(reports){
+  const map = {};
+  reports.forEach(r=>{
+    const key = r.area.trim();
+    if(!map[key]) map[key]=[];
+    map[key].push(r);
+  });
+  return map;
+}
+
+function render(filterText){
+  const filter = (filterText||"").trim().toLowerCase();
+  const filtered = filter
+    ? allReports.filter(r=>r.area.toLowerCase().includes(filter))
+    : allReports;
+
+  document.getElementById('statCount').textContent = allReports.length;
+  document.getElementById('statAreas').textContent = Object.keys(groupByArea(allReports)).length;
+  document.getElementById('statHidden').textContent =
+    allReports.filter(r=>r.hidden && r.hidden.trim()).length;
+
+  const listEl = document.getElementById('listings');
+  const countEl = document.getElementById('listCount');
+  listEl.innerHTML = "";
+
+  if(filtered.length === 0){
+    countEl.textContent = "";
+    listEl.innerHTML = '<p class="empty">No reports here yet. Be the first to add one below.</p>';
+    return;
+  }
+
+  countEl.textContent = filtered.length + (filter ? " matching" : "");
+  const grouped = groupByArea(filtered);
+  const areaNames = Object.keys(grouped).sort();
+
+  areaNames.forEach(area=>{
+    const group = document.createElement('div');
+    group.className = 'area-group';
+    const heading = document.createElement('h3');
+    heading.className = 'area-name';
+    heading.textContent = area;
+    group.appendChild(heading);
+
+    grouped[area].forEach(r=>{
+      const entry = document.createElement('div');
+      entry.className = 'entry';
+      const metaBits = [];
+      metaBits.push(r.rooms + " bed · advance " + (r.advance || "?") + " mo" + (r.year ? " · moved in " + r.year : ""));
+      if(r.hidden && r.hidden.trim()) metaBits.push('<span class="flag">' + escapeHtml(r.hidden) + '</span>');
+      if(r.note && r.note.trim()) metaBits.push(escapeHtml(r.note));
+
+      entry.innerHTML =
+        '<div class="type">' + escapeHtml(r.type) + '</div>' +
+        '<div class="rent">' + fmtTk(r.rent) + '/mo</div>' +
+        '<div class="meta">' + metaBits.join(' · ') + '</div>';
+      group.appendChild(entry);
+    });
+    listEl.appendChild(group);
+  });
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+async function loadReports(){
+  let stored = [];
+  try{
+    const result = await window.storage.get(STORAGE_KEY, true);
+    if(result && result.value){
+      stored = JSON.parse(result.value);
+    }
+  }catch(e){
+    stored = [];
+  }
+  allReports = SEED.concat(stored);
+  render("");
+}
+
+async function saveReport(report){
+  let stored = [];
+  try{
+    const result = await window.storage.get(STORAGE_KEY, true);
+    if(result && result.value){
+      stored = JSON.parse(result.value);
+    }
+  }catch(e){
+    stored = [];
+  }
+  stored.push(report);
+  await window.storage.set(STORAGE_KEY, JSON.stringify(stored), true);
+  return stored;
+}
+
+document.getElementById('areaSearch').addEventListener('input', (e)=>{
+  render(e.target.value);
+});
+
+document.getElementById('reportForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const statusMsg = document.getElementById('statusMsg');
+  const area = document.getElementById('f-area').value.trim();
+  const rent = document.getElementById('f-rent').value.trim();
+
+  if(!area || !rent){
+    statusMsg.textContent = "Area and monthly rent are required.";
+    return;
+  }
+
+  const report = {
+    area: area,
+    type: document.getElementById('f-type').value,
+    rooms: document.getElementById('f-rooms').value,
+    rent: Number(rent.replace(/[^0-9]/g,'')),
+    advance: document.getElementById('f-advance').value.trim(),
+    hidden: document.getElementById('f-hidden').value.trim(),
+    year: document.getElementById('f-year').value.trim(),
+    note: document.getElementById('f-note').value.trim(),
+  };
+
+  statusMsg.textContent = "Saving...";
+  try{
+    await saveReport(report);
+    allReports.push(report);
+    render(document.getElementById('areaSearch').value);
+    e.target.reset();
+    document.getElementById('f-rooms').value = "2";
+    statusMsg.textContent = "Added. Thank you — this is now visible to everyone searching " + area + ".";
+  }catch(err){
+    statusMsg.textContent = "Couldn't save that just now. Please try again.";
+  }
+});
+
+loadReports();
+</script>
+</body>
+</html>
