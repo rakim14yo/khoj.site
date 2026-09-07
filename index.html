@@ -3,202 +3,300 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khoj — the real rent in your area</title>
+<title>Khoj — today's rent rates, Chattogram</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F2ECDD;
-    --paper-raised:#EAE2CC;
-    --ink:#1F3A3D;
-    --ink-soft:#3E5457;
-    --mustard:#C98A2C;
-    --rust:#A23E2E;
-    --line:#D3C4A0;
-    --grey:#6B5D4F;
+    --wall:#EDE4D0;
+    --wall-shadow:#E0D4B8;
+    --board:#243128;
+    --board-edge:#1A2320;
+    --chalk:#F7F3E6;
+    --awning:#2E6B4F;
+    --awning-dark:#1E4936;
+    --crate:#C77B2C;
+    --tag-string:#8A7A5C;
+    --ink:#2A2620;
+    --ink-soft:#5C5546;
+    --tagred:#A6362A;
+    --grey:#726A57;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
   body{
-    background:var(--paper);
+    margin:0;
+    background:var(--wall);
     color:var(--ink);
-    font-family:'Work Sans', sans-serif;
+    font-family:'Schibsted Grotesk', sans-serif;
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
-
-  header{padding:48px 0 32px;}
-  .brand{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:22px;
-    color:var(--ink);
-    letter-spacing:-0.01em;
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
   }
-  .brand span{color:var(--mustard);}
-  .place{font-size:13px;color:var(--grey);margin-top:2px;}
+  .wrap{max-width:780px;margin:0 auto;padding:0 22px;}
+
+  header{
+    padding:36px 0 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    border-bottom:6px solid var(--crate);
+  }
+  .shopsign{
+    background:var(--awning);
+    color:var(--chalk);
+    padding:10px 18px;
+    font-family:'Kalam', cursive;
+    font-weight:700;
+    font-size:22px;
+    transform:rotate(-1deg);
+    box-shadow: 3px 3px 0 var(--awning-dark);
+  }
+  .locale{
+    font-size:12.5px;
+    color:var(--grey);
+    text-align:right;
+    padding-top:8px;
+  }
 
   h1{
-    font-family:'Fraunces', serif;
-    font-weight:400;
-    font-style:italic;
-    font-size:clamp(30px,5vw,44px);
-    line-height:1.12;
-    margin:28px 0 14px;
-    max-width:11ch;
+    font-family:'Kalam', cursive;
+    font-weight:700;
+    font-size:clamp(30px,5.2vw,46px);
+    line-height:1.15;
+    margin:36px 0 12px;
+    max-width:13ch;
     color:var(--ink);
   }
   .sub{
-    font-size:16px;
+    font-size:16.5px;
     color:var(--ink-soft);
-    max-width:46ch;
-    margin:0 0 28px;
+    max-width:44ch;
+    margin:0 0 30px;
   }
 
-  .stat-line{
+  .board{
+    background:var(--board);
+    border:3px solid var(--board-edge);
+    color:var(--chalk);
+    padding:22px 24px;
+    margin-bottom:44px;
+    position:relative;
+  }
+  .board-title{
+    font-family:'Kalam', cursive;
+    font-size:15px;
+    color:#D9CFA8;
+    margin-bottom:10px;
+  }
+  .board-stats{
     display:flex;
-    gap:28px;
+    gap:32px;
     flex-wrap:wrap;
-    padding:18px 0;
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-    margin-bottom:32px;
   }
-  .stat b{
-    font-family:'Fraunces', serif;
-    font-size:26px;
-    font-weight:600;
+  .board-stat .num{
+    font-family:'Kalam', cursive;
+    font-weight:700;
+    font-size:34px;
     display:block;
-    color:var(--ink);
+    line-height:1;
   }
-  .stat small{font-size:12px;color:var(--grey);}
+  .board-stat .lbl{
+    font-size:12.5px;
+    color:#C9BE97;
+    margin-top:4px;
+  }
+
+  section.block{margin-bottom:50px;}
+  .block-head h2{
+    font-family:'Kalam', cursive;
+    font-weight:700;
+    font-size:23px;
+    margin:0 0 4px;
+  }
+  .block-head p{
+    font-size:14px;
+    color:var(--grey);
+    margin:0 0 22px;
+  }
+
+  .tags-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:26px 20px;
+    padding-top:10px;
+  }
+  .tag{
+    position:relative;
+    background:var(--chalk);
+    border:1px solid var(--ink);
+    border-radius:3px;
+    padding:18px 16px 14px;
+    min-width:128px;
+    box-shadow:2px 2px 0 rgba(0,0,0,0.12);
+  }
+  .tag:nth-child(odd){transform:rotate(-1.6deg);}
+  .tag:nth-child(even){transform:rotate(1.4deg);}
+  .tag::before{
+    content:"";
+    position:absolute;
+    top:-13px;
+    left:50%;
+    width:1px;
+    height:13px;
+    background:var(--tag-string);
+  }
+  .tag::after{
+    content:"";
+    position:absolute;
+    top:-5px;
+    left:50%;
+    transform:translateX(-50%);
+    width:7px;height:7px;
+    border-radius:50%;
+    background:var(--wall);
+    border:1px solid var(--ink);
+  }
+  .tag .rank{
+    font-size:11px;
+    color:var(--grey);
+    margin-bottom:4px;
+  }
+  .tag .area{
+    font-weight:600;
+    font-size:14.5px;
+    margin-bottom:6px;
+  }
+  .tag .price{
+    font-family:'Kalam', cursive;
+    font-weight:700;
+    font-size:21px;
+    color:var(--tagred);
+  }
+  .tag .permo{font-size:11px;color:var(--grey);}
 
   .search-row{
     display:flex;
     gap:10px;
-    margin-bottom:8px;
+    margin-bottom:6px;
   }
   input[type=text], select{
-    font-family:'Work Sans', sans-serif;
+    font-family:'Schibsted Grotesk', sans-serif;
     font-size:15px;
-    padding:12px 14px;
+    padding:11px 13px;
     border:1px solid var(--ink);
-    background:var(--paper);
+    background:var(--chalk);
     color:var(--ink);
-    border-radius:2px;
+    border-radius:3px;
   }
   #areaSearch{flex:1;}
-  .search-hint{font-size:12px;color:var(--grey);margin:0 0 40px;}
+  .search-hint{font-size:12.5px;color:var(--grey);margin:0 0 26px;}
 
-  section.block{margin-bottom:48px;}
-  .block-head{
+  .stall{
+    background:var(--chalk);
+    border:1px solid var(--ink);
+    border-top:5px solid var(--awning);
+    padding:18px 20px 8px;
+    margin-top:22px;
+    box-shadow:3px 3px 0 rgba(0,0,0,0.08);
+  }
+  .stall-name{
+    font-family:'Kalam', cursive;
+    font-weight:700;
+    font-size:18px;
+    color:var(--awning-dark);
+    margin:0 0 12px;
+  }
+  .listing{
     display:flex;
     justify-content:space-between;
     align-items:baseline;
-    margin-bottom:4px;
-  }
-  .block-head h2{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:20px;
-    margin:0;
-  }
-  .block-head .count{font-size:13px;color:var(--grey);}
-
-  .area-group{margin-top:28px;}
-  .area-name{
-    font-family:'Fraunces', serif;
-    font-style:italic;
-    font-size:17px;
-    color:var(--rust);
-    margin:0 0 10px;
-    padding-bottom:6px;
-    border-bottom:1px solid var(--line);
-  }
-  .entry{
-    display:grid;
-    grid-template-columns: 1fr auto;
-    gap:2px 16px;
-    padding:12px 0;
-    border-bottom:1px dotted var(--line);
+    gap:14px;
+    padding:10px 0;
+    border-top:1px solid #E4DAC0;
     font-size:14.5px;
   }
-  .entry:last-child{border-bottom:none;}
-  .entry .type{color:var(--ink);}
-  .entry .rent{
-    font-variant-numeric: tabular-nums;
+  .listing:first-of-type{border-top:none;}
+  .listing .desc{color:var(--ink);}
+  .listing .price{
     font-weight:600;
     color:var(--ink);
-    text-align:right;
     white-space:nowrap;
+    font-variant-numeric: tabular-nums;
   }
-  .entry .meta{
-    grid-column: 1 / -1;
+  .listing-note{
     font-size:12.5px;
     color:var(--grey);
+    padding:0 0 12px;
+    margin-top:-8px;
+    border-bottom:1px solid #E4DAC0;
   }
-  .flag{color:var(--rust);}
+  .listing-note:last-of-type{border-bottom:none;}
+  .flag{color:var(--tagred); font-weight:500;}
 
   .empty{
-    padding:24px 0;
+    padding:20px 0;
     color:var(--grey);
     font-size:14.5px;
     font-style:italic;
   }
 
   form{
-    background:var(--paper-raised);
-    border:1px solid var(--line);
+    background:var(--chalk);
+    border:1px solid var(--ink);
+    border-top:5px solid var(--crate);
     padding:24px;
-    border-radius:2px;
   }
-  .field-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+  .field-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:13px;}
   .field{flex:1;min-width:150px;display:flex;flex-direction:column;gap:5px;}
   label{font-size:12.5px;color:var(--grey);}
   input,select{width:100%;}
   textarea{
-    font-family:'Work Sans', sans-serif;
+    font-family:'Schibsted Grotesk', sans-serif;
     font-size:14px;
     padding:10px 12px;
     border:1px solid var(--ink);
-    background:var(--paper);
+    background:var(--wall);
     color:var(--ink);
-    border-radius:2px;
+    border-radius:3px;
     width:100%;
     resize:vertical;
-    min-height:60px;
+    min-height:58px;
   }
   button{
-    font-family:'Work Sans', sans-serif;
-    font-weight:600;
-    font-size:14.5px;
-    background:var(--ink);
-    color:var(--paper);
+    font-family:'Kalam', cursive;
+    font-weight:700;
+    font-size:16px;
+    background:var(--awning);
+    color:var(--chalk);
     border:none;
-    padding:13px 22px;
-    border-radius:2px;
+    padding:12px 22px;
+    border-radius:3px;
     cursor:pointer;
-    margin-top:6px;
+    margin-top:4px;
   }
-  button:hover{background:var(--ink-soft);}
+  button:hover{background:var(--awning-dark);}
   button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
-    outline:2px solid var(--mustard);
+    outline:2px solid var(--crate);
     outline-offset:2px;
   }
   .status-msg{font-size:13px;margin-top:10px;color:var(--ink-soft);min-height:16px;}
 
   footer{
-    padding:36px 0 60px;
-    border-top:1px solid var(--line);
+    padding:34px 0 60px;
+    border-top:1px solid var(--wall-shadow);
     font-size:12.5px;
     color:var(--grey);
     max-width:52ch;
   }
 
-  @media (max-width:480px){
+  @media (max-width:520px){
+    header{flex-direction:column;gap:12px;}
+    .locale{text-align:left;padding-top:0;}
     .field-row{flex-direction:column;}
+    .board-stats{gap:22px;}
   }
 </style>
 </head>
@@ -206,37 +304,47 @@
 <div class="wrap">
 
   <header>
-    <div class="brand">খোঁজ <span>Khoj</span></div>
-    <div class="place">Chattogram, Bangladesh</div>
+    <div class="shopsign">খোঁজ · Khoj</div>
+    <div class="locale">Chattogram rent stall<br>run by renters, for renters</div>
   </header>
 
-  <h1>What's the real rent in your area?</h1>
-  <p class="sub">Not what a broker quotes you. What people actually pay, entered by the people paying it.</p>
+  <h1>What's today's rate for your area?</h1>
+  <p class="sub">Not what a broker quotes at the door. What people are actually paying, posted up by the people paying it — like a market rate board, for rent.</p>
 
-  <div class="stat-line">
-    <div class="stat"><b id="statCount">—</b><small>reports</small></div>
-    <div class="stat"><b id="statAreas">—</b><small>areas covered</small></div>
-    <div class="stat"><b id="statHidden">—</b><small>report a hidden charge</small></div>
+  <div class="board">
+    <div class="board-title">on the board right now</div>
+    <div class="board-stats">
+      <div class="board-stat"><span class="num" id="statCount">0</span><span class="lbl">rates posted</span></div>
+      <div class="board-stat"><span class="num" id="statAreas">0</span><span class="lbl">areas covered</span></div>
+      <div class="board-stat"><span class="num" id="statHidden">0</span><span class="lbl">flag a hidden charge</span></div>
+    </div>
   </div>
 
-  <div class="search-row">
-    <input type="text" id="areaSearch" placeholder="Search an area — e.g. Nasirabad, GEC, Khulshi">
-  </div>
-  <p class="search-hint">Leave it blank to see everything on record.</p>
+  <section class="block">
+    <div class="block-head">
+      <h2>Cheapest to priciest</h2>
+      <p>Median rent posted per area — hover a tag, that's the going rate.</p>
+    </div>
+    <div class="tags-row" id="ladder"></div>
+  </section>
 
   <section class="block" id="listingsBlock">
     <div class="block-head">
-      <h2>On record</h2>
-      <span class="count" id="listCount"></span>
+      <h2>Every rate on the board</h2>
+      <p>Search an area, or browse the whole stall.</p>
     </div>
+    <div class="search-row">
+      <input type="text" id="areaSearch" placeholder="Nasirabad, GEC, Khulshi…">
+    </div>
+    <p class="search-hint">Leave it blank to see everything.</p>
     <div id="listings"></div>
   </section>
 
   <section class="block">
     <div class="block-head">
-      <h2>Add what you're paying</h2>
+      <h2>Post your own rate</h2>
+      <p>Under a minute. No name, no phone number, nothing that identifies you.</p>
     </div>
-    <p class="sub" style="margin-bottom:18px;">Takes under a minute. No name, no phone number, nothing that identifies you.</p>
     <form id="reportForm">
       <div class="field-row">
         <div class="field">
@@ -285,16 +393,16 @@
       <div class="field-row">
         <div class="field">
           <label for="f-note">Anything else worth knowing</label>
-          <textarea id="f-note" placeholder="Optional — e.g. landlord raised rent mid-lease, building has generator, etc."></textarea>
+          <textarea id="f-note" placeholder="Landlord raised rent mid-lease, building has a generator, water pressure is bad in the dry season…"></textarea>
         </div>
       </div>
-      <button type="submit">Add this report</button>
-      <div class="status-msg" id="statusMsg"></div>
+      <button type="submit">Post this rate</button>
+      <div class="status-msg" id="statusMsg" role="status"></div>
     </form>
   </section>
 
   <footer>
-    Khoj is an independent, unverified public record — every entry is self-reported and not checked against a lease or landlord. It exists to give renters a rough sense of what's normal before they negotiate, not to make claims about any specific building or owner.
+    Khoj is an independent, unverified board — every rate is self-reported and not checked against a lease or a landlord. It exists to give renters a rough sense of what's normal before they negotiate, not to make a claim about any specific building or owner.
   </footer>
 
 </div>
@@ -303,7 +411,7 @@
 const SEED = [
   {area:"Nasirabad", type:"Flat", rooms:"2", rent:16000, advance:3, hidden:"", year:2024, note:""},
   {area:"Nasirabad", type:"Flat", rooms:"3", rent:22000, advance:4, hidden:"Tk 1,200/mo 'gas line' charge", year:2023, note:""},
-  {area:"Nasirabad", type:"Room / single unit", rooms:"1", rent:7500, advance:2, hidden:"", year:2025, note:"Shared rooftop water tank, low pressure in dry season"},
+  {area:"Nasirabad", type:"Room / single unit", rooms:"1", rent:7500, advance:2, hidden:"", year:2025, note:"Shared rooftop tank, low pressure in dry season"},
   {area:"Panchlaish", type:"Flat", rooms:"2", rent:19000, advance:3, hidden:"", year:2024, note:""},
   {area:"Panchlaish", type:"Flat", rooms:"3", rent:27000, advance:6, hidden:"'House tuning' fee Tk 15,000 one-time", year:2022, note:"Advance never returned on exit"},
   {area:"Khulshi", type:"Flat", rooms:"3", rent:35000, advance:4, hidden:"", year:2024, note:""},
@@ -313,7 +421,7 @@ const SEED = [
   {area:"Halishahar", type:"Flat", rooms:"2", rent:13500, advance:3, hidden:"", year:2024, note:""},
 ];
 
-const STORAGE_KEY = "khoj-reports-v1";
+const STORAGE_KEY = "khoj-reports-v3";
 let allReports = [];
 
 function fmtTk(n){
@@ -332,54 +440,93 @@ function groupByArea(reports){
   return map;
 }
 
+function median(nums){
+  const s = [...nums].sort((a,b)=>a-b);
+  const mid = Math.floor(s.length/2);
+  return s.length % 2 ? s[mid] : Math.round((s[mid-1]+s[mid])/2);
+}
+
+function renderTags(){
+  const grouped = groupByArea(allReports);
+  const rows = Object.keys(grouped).map(area=>{
+    const rents = grouped[area].map(r=>r.rent).filter(n=>!isNaN(n));
+    return { area, med: median(rents) };
+  }).sort((a,b)=>a.med-b.med);
+
+  const ladderEl = document.getElementById('ladder');
+  ladderEl.innerHTML = "";
+
+  rows.forEach((row, i)=>{
+    const el = document.createElement('div');
+    el.className = 'tag';
+    el.innerHTML =
+      '<div class="rank">#' + (i+1) + '</div>' +
+      '<div class="area">' + escapeHtml(row.area) + '</div>' +
+      '<div class="price">' + fmtTk(row.med) + '</div>' +
+      '<div class="permo">per month</div>';
+    ladderEl.appendChild(el);
+  });
+}
+
+function animateCount(el, target){
+  const dur = 700;
+  const start = performance.now();
+  function tick(now){
+    const p = Math.min(1, (now-start)/dur);
+    el.textContent = Math.round(p * target);
+    if(p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
 function render(filterText){
   const filter = (filterText||"").trim().toLowerCase();
   const filtered = filter
     ? allReports.filter(r=>r.area.toLowerCase().includes(filter))
     : allReports;
 
-  document.getElementById('statCount').textContent = allReports.length;
-  document.getElementById('statAreas').textContent = Object.keys(groupByArea(allReports)).length;
-  document.getElementById('statHidden').textContent =
-    allReports.filter(r=>r.hidden && r.hidden.trim()).length;
+  animateCount(document.getElementById('statCount'), allReports.length);
+  animateCount(document.getElementById('statAreas'), Object.keys(groupByArea(allReports)).length);
+  animateCount(document.getElementById('statHidden'), allReports.filter(r=>r.hidden && r.hidden.trim()).length);
 
   const listEl = document.getElementById('listings');
-  const countEl = document.getElementById('listCount');
   listEl.innerHTML = "";
 
   if(filtered.length === 0){
-    countEl.textContent = "";
-    listEl.innerHTML = '<p class="empty">No reports here yet. Be the first to add one below.</p>';
+    listEl.innerHTML = '<p class="empty">Nothing posted here yet. Be the first to add a rate below.</p>';
     return;
   }
 
-  countEl.textContent = filtered.length + (filter ? " matching" : "");
   const grouped = groupByArea(filtered);
   const areaNames = Object.keys(grouped).sort();
 
   areaNames.forEach(area=>{
-    const group = document.createElement('div');
-    group.className = 'area-group';
-    const heading = document.createElement('h3');
-    heading.className = 'area-name';
+    const stall = document.createElement('div');
+    stall.className = 'stall';
+    const heading = document.createElement('div');
+    heading.className = 'stall-name';
     heading.textContent = area;
-    group.appendChild(heading);
+    stall.appendChild(heading);
 
     grouped[area].forEach(r=>{
-      const entry = document.createElement('div');
-      entry.className = 'entry';
+      const row = document.createElement('div');
+      row.className = 'listing';
+      row.innerHTML =
+        '<span class="desc">' + escapeHtml(r.type) + ', ' + escapeHtml(r.rooms) + ' bed</span>' +
+        '<span class="price">' + fmtTk(r.rent) + '/mo</span>';
+      stall.appendChild(row);
+
       const metaBits = [];
-      metaBits.push(r.rooms + " bed · advance " + (r.advance || "?") + " mo" + (r.year ? " · moved in " + r.year : ""));
+      metaBits.push('advance ' + (r.advance || "?") + ' mo' + (r.year ? ' · moved in ' + r.year : ''));
       if(r.hidden && r.hidden.trim()) metaBits.push('<span class="flag">' + escapeHtml(r.hidden) + '</span>');
       if(r.note && r.note.trim()) metaBits.push(escapeHtml(r.note));
 
-      entry.innerHTML =
-        '<div class="type">' + escapeHtml(r.type) + '</div>' +
-        '<div class="rent">' + fmtTk(r.rent) + '/mo</div>' +
-        '<div class="meta">' + metaBits.join(' · ') + '</div>';
-      group.appendChild(entry);
+      const note = document.createElement('div');
+      note.className = 'listing-note';
+      note.innerHTML = metaBits.join(' · ');
+      stall.appendChild(note);
     });
-    listEl.appendChild(group);
+    listEl.appendChild(stall);
   });
 }
 
@@ -400,6 +547,7 @@ async function loadReports(){
     stored = [];
   }
   allReports = SEED.concat(stored);
+  renderTags();
   render("");
 }
 
@@ -426,10 +574,15 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const statusMsg = document.getElementById('statusMsg');
   const area = document.getElementById('f-area').value.trim();
-  const rent = document.getElementById('f-rent').value.trim();
+  const rentRaw = document.getElementById('f-rent').value.trim();
 
-  if(!area || !rent){
+  if(!area || !rentRaw){
     statusMsg.textContent = "Area and monthly rent are required.";
+    return;
+  }
+  const rentNum = Number(rentRaw.replace(/[^0-9]/g,''));
+  if(!rentNum){
+    statusMsg.textContent = "Enter the rent as a number, like 18000.";
     return;
   }
 
@@ -437,23 +590,24 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
     area: area,
     type: document.getElementById('f-type').value,
     rooms: document.getElementById('f-rooms').value,
-    rent: Number(rent.replace(/[^0-9]/g,'')),
+    rent: rentNum,
     advance: document.getElementById('f-advance').value.trim(),
     hidden: document.getElementById('f-hidden').value.trim(),
     year: document.getElementById('f-year').value.trim(),
     note: document.getElementById('f-note').value.trim(),
   };
 
-  statusMsg.textContent = "Saving...";
+  statusMsg.textContent = "Posting…";
   try{
     await saveReport(report);
     allReports.push(report);
+    renderTags();
     render(document.getElementById('areaSearch').value);
     e.target.reset();
     document.getElementById('f-rooms').value = "2";
-    statusMsg.textContent = "Added. Thank you — this is now visible to everyone searching " + area + ".";
+    statusMsg.textContent = "Posted — now visible to everyone searching " + area + ".";
   }catch(err){
-    statusMsg.textContent = "Couldn't save that just now. Please try again.";
+    statusMsg.textContent = "Couldn't post that just now. Try again.";
   }
 });
 
