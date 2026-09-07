@@ -334,12 +334,89 @@
     max-width:52ch;
   }
 
+  /* ---------- area page ---------- */
+  .area-page{display:none;}
+  .area-page.open{display:block;}
+  #landingView.hidden{display:none;}
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:13px;
+    color:var(--awning-dark);
+    font-weight:600;
+    cursor:pointer;
+    background:none;
+    border:none;
+    padding:0 0 16px;
+    font-family:'Schibsted Grotesk', sans-serif;
+  }
+  .back-link:hover{text-decoration:underline;}
+  .area-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .area-header h2{
+    font-family:'Kalam',cursive;
+    font-size:26px;
+    margin:0;
+    color:var(--ink);
+  }
+  .area-header .freshness{font-size:12px;color:var(--grey);}
+
+  .stat-strip{
+    display:flex;
+    background:var(--chalk);
+    border:1px solid var(--ink);
+    margin-bottom:20px;
+  }
+  .stat-cell{
+    flex:1;
+    padding:14px 12px;
+    border-right:1px solid var(--wall-shadow);
+    text-align:center;
+  }
+  .stat-cell:last-child{border-right:none;}
+  .stat-cell .v{font-family:'Kalam',cursive;font-weight:700;font-size:19px;color:var(--awning-dark);}
+  .stat-cell .l{font-size:10.5px;color:var(--grey);margin-top:3px;}
+
+  .filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .filter-row select{font-size:13px;padding:8px 10px;}
+
+  .dist-wrap{margin-bottom:22px;}
+  .dist-title{font-size:12px;color:var(--grey);margin-bottom:8px;}
+  .dist-bars{display:flex;align-items:flex-end;gap:6px;height:64px;}
+  .dist-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+  .dist-bar .fill{width:100%;background:var(--crate);border-radius:2px 2px 0 0;min-height:3px;}
+  .dist-bar .fill.zero{background:var(--wall-shadow);}
+  .dist-bar .bl{font-size:9.5px;color:var(--grey);margin-top:5px;text-align:center;line-height:1.2;}
+  .dist-bar .bn{font-size:10px;color:var(--ink-soft);font-weight:600;}
+
+  .empty-state{
+    padding:30px 20px;
+    text-align:center;
+    background:var(--chalk);
+    border:1px dashed var(--mute);
+  }
+  .empty-state .headline{font-family:'Kalam',cursive;font-size:18px;color:var(--awning-dark);margin-bottom:8px;}
+  .empty-state p{font-size:13.5px;color:var(--grey);max-width:34ch;margin:0 auto 16px;}
+
+  .tag.clickable{cursor:pointer;font-family:inherit;text-align:left;}
+  .tag.clickable:hover{transform:rotate(0deg) translateY(-2px);}
+
   @media (max-width:520px){
     header{flex-direction:column;gap:12px;align-items:flex-start;}
     .locale{text-align:left;}
     .field-row{flex-direction:column;}
     .board-stats{gap:22px;}
     .listing{flex-direction:column; gap:2px;}
+    .area-header{flex-direction:column;}
+    .stat-strip{flex-wrap:wrap;}
+    .stat-cell{flex:1 1 33%;border-bottom:1px solid var(--wall-shadow);}
   }
 </style>
 </head>
@@ -348,7 +425,7 @@
 
   <header>
     <img class="logo" src="logo.png" alt="Khoj — Bhara age, bhabna pore">
-    <div class="locale">Chattogram's rent stall<br>run by renters, for the renters</div>
+    <div class="locale">Chattogram rent stall<br>run by renters, for renters</div>
   </header>
 
   <h1>What's today's rate for your area?</h1>
@@ -363,25 +440,64 @@
     </div>
   </div>
 
-  <section class="block">
-    <div class="block-head">
-      <h2>Cheapest to priciest</h2>
-      <p>Median rent per area, with the reported range and how many rates it's based on.</p>
-    </div>
-    <div class="tags-row" id="ladder"></div>
-  </section>
+  <div id="landingView">
+    <section class="block">
+      <div class="block-head">
+        <h2>Cheapest to priciest</h2>
+        <p>Median rent per area, with the reported range and how many rates it's based on. Tap one to see the full picture.</p>
+      </div>
+      <div class="tags-row" id="ladder"></div>
+    </section>
 
-  <section class="block" id="listingsBlock">
-    <div class="block-head">
-      <h2>Every rate on the board</h2>
-      <p>Search an area, or browse the whole stall. Tap "still this rate?" to keep an entry fresh, or flag one that looks wrong.</p>
+    <section class="block" id="listingsBlock">
+      <div class="block-head">
+        <h2>Every rate on the board</h2>
+        <p>Search an area, or browse the whole stall. Tap "still this rate?" to keep an entry fresh, or flag one that looks wrong.</p>
+      </div>
+      <div class="search-row">
+        <input type="text" id="areaSearch" placeholder="Nasirabad, GEC, Khulshi…">
+      </div>
+      <p class="search-hint">Leave it blank to see everything, or press enter to jump to that area's page.</p>
+      <div id="listings"><p class="empty">Loading…</p></div>
+    </section>
+  </div>
+
+  <!-- ================= AREA PAGE ================= -->
+  <div class="area-page" id="areaPage">
+    <button type="button" class="back-link" id="backToLanding">‹ back to all areas</button>
+
+    <div class="area-header">
+      <h2 id="areaName">—</h2>
+      <span class="freshness" id="areaFreshness"></span>
     </div>
-    <div class="search-row">
-      <input type="text" id="areaSearch" placeholder="Nasirabad, GEC, Khulshi…">
+
+    <div class="stat-strip" id="areaStatStrip"></div>
+
+    <div class="filter-row">
+      <select id="filterBed">
+        <option value="">All bedrooms</option>
+        <option value="1">1 bed</option>
+        <option value="2">2 bed</option>
+        <option value="3">3 bed</option>
+        <option value="4+">4+ bed</option>
+      </select>
+      <select id="filterType">
+        <option value="">All property types</option>
+        <option>Flat</option>
+        <option>Room / single unit</option>
+        <option>Sublet</option>
+        <option>House (full)</option>
+      </select>
     </div>
-    <p class="search-hint">Leave it blank to see everything.</p>
-    <div id="listings"><p class="empty">Loading…</p></div>
-  </section>
+
+    <div class="dist-wrap" id="distWrap"></div>
+
+    <div id="areaListings"></div>
+
+    <div class="cta-row" style="margin-top:22px;">
+      <button type="button" class="submit-btn" id="openPostFromArea">Post your rate for this area</button>
+    </div>
+  </div>
 
   <section class="block">
     <div class="block-head">
@@ -545,16 +661,167 @@ function renderTags(){
   ladderEl.innerHTML = "";
 
   rows.forEach((row, i)=>{
-    const el = document.createElement('div');
-    el.className = 'tag';
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'tag clickable';
     el.innerHTML =
       '<div class="rank">#' + (i+1) + '</div>' +
       '<div class="area">' + escapeHtml(row.area) + '</div>' +
       '<div class="price">' + fmtTk(row.stats.median) + '</div>' +
       '<div class="range">' + fmtTk(row.stats.min) + '–' + fmtTk(row.stats.max) + '</div>' +
       '<div class="count">based on ' + row.stats.count + ' report' + (row.stats.count===1?'':'s') + '</div>';
+    el.addEventListener('click', ()=>goToArea(row.area));
     ladderEl.appendChild(el);
   });
+}
+
+/* ---------- area page: filters + distribution ---------- */
+let currentArea = null;
+
+function currentFilters(){
+  return {
+    bed: document.getElementById('filterBed').value,
+    type: document.getElementById('filterType').value
+  };
+}
+
+function renderDistribution(items){
+  const wrap = document.getElementById('distWrap');
+  if(items.length < 2){ wrap.innerHTML = ""; return; }
+  const rents = items.map(r=>r.rent).sort((a,b)=>a-b);
+  const min = rents[0], max = rents[rents.length-1];
+  const bucketCount = Math.min(5, Math.max(3, Math.ceil(items.length/3)));
+  const span = Math.max(1, max - min);
+  const bucketSize = Math.ceil(span / bucketCount);
+  const buckets = new Array(bucketCount).fill(0);
+  rents.forEach(r=>{
+    let idx = bucketSize ? Math.floor((r - min) / bucketSize) : 0;
+    if(idx >= bucketCount) idx = bucketCount - 1;
+    buckets[idx]++;
+  });
+  const maxCount = Math.max(...buckets);
+  let html = '<div class="dist-title">how rents are spread across ' + items.length + ' report' + (items.length===1?'':'s') + '</div><div class="dist-bars">';
+  buckets.forEach((c,i)=>{
+    const lo = min + i*bucketSize;
+    const hi = i === bucketCount-1 ? max : lo + bucketSize - 1;
+    const pct = maxCount ? Math.max(4, Math.round((c/maxCount)*100)) : 4;
+    html += '<div class="dist-bar"><span class="bn">' + c + '</span><div class="fill' + (c===0?' zero':'') + '" style="height:' + pct + '%"></div><span class="bl">' + fmtTk(lo).replace('Tk ','') + '–' + fmtTk(hi).replace('Tk ','') + '</span></div>';
+  });
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+function renderAreaPage(){
+  const grouped = groupByArea(allReports);
+  const items = grouped[currentArea] || [];
+  document.getElementById('areaName').textContent = currentArea;
+
+  if(items.length === 0){
+    document.getElementById('areaFreshness').textContent = "";
+    document.getElementById('areaStatStrip').innerHTML = "";
+    document.getElementById('distWrap').innerHTML = "";
+    document.getElementById('areaListings').innerHTML =
+      '<div class="empty-state">' +
+        '<div class="headline">Nobody&rsquo;s chalked ' + escapeHtml(currentArea) + ' yet.</div>' +
+        '<p>Be the first renter to put the rate on the board — it takes under a minute and stays anonymous.</p>' +
+        '<button type="button" class="submit-btn" id="emptyStatePost">Post the first rate</button>' +
+      '</div>';
+    document.getElementById('emptyStatePost').addEventListener('click', ()=>goToPostForm(currentArea));
+    return;
+  }
+
+  const stats = areaStats(items);
+  const mostRecent = items.reduce((acc,r)=> monthsAgo(r.as_of) < monthsAgo(acc.as_of) ? r : acc, items[0]);
+  document.getElementById('areaFreshness').textContent = "most recent report: " + ageLabel(mostRecent.as_of);
+
+  document.getElementById('areaStatStrip').innerHTML =
+    '<div class="stat-cell"><div class="v">' + fmtTk(stats.median) + '</div><div class="l">typical rent</div></div>' +
+    '<div class="stat-cell"><div class="v">' + fmtTk(stats.min) + '–' + fmtTk(stats.max) + '</div><div class="l">reported range</div></div>' +
+    '<div class="stat-cell"><div class="v">' + stats.count + '</div><div class="l">report' + (stats.count===1?'':'s') + ' on file</div></div>';
+
+  const filters = currentFilters();
+  const filtered = items.filter(r=>{
+    if(filters.bed && r.rooms !== filters.bed) return false;
+    if(filters.type && r.type !== filters.type) return false;
+    return true;
+  });
+
+  renderDistribution(filtered.length ? filtered : items);
+
+  const listEl = document.getElementById('areaListings');
+  listEl.innerHTML = "";
+
+  if(filtered.length === 0){
+    listEl.innerHTML = '<div class="empty-state"><div class="headline">No reports match those filters.</div><p>Try widening the bedroom or property type filter, or post one yourself.</p></div>';
+    return;
+  }
+
+  const flaggedByMe = getFlaggedIds();
+  const stall = document.createElement('div');
+  stall.className = 'stall';
+
+  const sorted = [...filtered].sort((a,b)=> new Date(b.as_of) - new Date(a.as_of));
+
+  sorted.forEach(r=>{
+    const outdated = monthsAgo(r.as_of) >= 6;
+    const outlier = isOutlierRent(r.rent, stats, items.length);
+    const heavilyFlagged = (r.flag_count||0) >= 3;
+
+    const row = document.createElement('div');
+    row.className = 'listing';
+    row.innerHTML =
+      '<span class="desc">' + escapeHtml(r.type) + ', ' + escapeHtml(r.rooms) + ' bed' + (r.advance ? ' · advance ' + escapeHtml(String(r.advance)) + ' mo' : '') + '</span>' +
+      '<span class="price">' + fmtTk(r.rent) + '/mo</span>';
+    stall.appendChild(row);
+
+    const noteBits = [];
+    if(r.hidden && r.hidden.trim()) noteBits.push('<span class="flag">' + escapeHtml(r.hidden) + '</span>');
+    if(r.note && r.note.trim()) noteBits.push(escapeHtml(r.note));
+    if(outlier) noteBits.push('<span class="flagged-note">far from this area&#39;s usual range — worth double-checking</span>');
+    if(heavilyFlagged) noteBits.push('<span class="flagged-note">flagged by several visitors</span>');
+    if(noteBits.length){
+      const note = document.createElement('div');
+      note.className = 'listing-note';
+      note.innerHTML = noteBits.join(' · ');
+      stall.appendChild(note);
+    }
+
+    const actions = document.createElement('div');
+    actions.className = 'listing-actions';
+    const alreadyFlagged = flaggedByMe.includes(r.id);
+    actions.innerHTML =
+      '<span class="asof' + (outdated ? ' outdated' : '') + '">' + ageLabel(r.as_of) + (outdated ? ' · may be outdated' : '') + '</span>' +
+      '<button type="button" class="mini-btn" data-action="confirm" data-id="' + r.id + '">still this rate?</button>' +
+      '<button type="button" class="mini-btn" data-action="flag" data-id="' + r.id + '"' + (alreadyFlagged ? ' disabled' : '') + '>' + (alreadyFlagged ? 'flagged' : 'looks off') + '</button>';
+    stall.appendChild(actions);
+  });
+
+  listEl.appendChild(stall);
+  listEl.querySelectorAll('.mini-btn').forEach(btn=>{
+    btn.addEventListener('click', onMiniAction);
+  });
+}
+
+function goToArea(areaName){
+  currentArea = areaName.trim();
+  document.getElementById('landingView').classList.add('hidden');
+  document.getElementById('areaPage').classList.add('open');
+  document.getElementById('filterBed').value = "";
+  document.getElementById('filterType').value = "";
+  renderAreaPage();
+  document.querySelector('.board').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function backToLanding(){
+  currentArea = null;
+  document.getElementById('areaPage').classList.remove('open');
+  document.getElementById('landingView').classList.remove('hidden');
+}
+
+function goToPostForm(prefillArea){
+  if(prefillArea) document.getElementById('f-area').value = prefillArea;
+  document.getElementById('reportForm').scrollIntoView({behavior:'smooth', block:'start'});
+  document.getElementById('f-rent').focus();
 }
 
 function animateCount(el, target){
@@ -676,6 +943,7 @@ async function onMiniAction(e){
 
   renderTags();
   render(document.getElementById('areaSearch').value);
+  if(currentArea) renderAreaPage();
 }
 
 function escapeHtml(str){
@@ -697,7 +965,7 @@ async function loadReports(){
   if(error){
     console.error(error);
     document.getElementById('listings').innerHTML =
-      '<p class="empty">Couldn\\'t load the board right now — check the Supabase connection.</p>';
+      '<p class="empty">Could not load the board right now — check the Supabase connection.</p>';
     return;
   }
 
@@ -709,6 +977,16 @@ async function loadReports(){
 document.getElementById('areaSearch').addEventListener('input', (e)=>{
   render(e.target.value);
 });
+document.getElementById('areaSearch').addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter' && e.target.value.trim()){
+    e.preventDefault();
+    goToArea(e.target.value.trim());
+  }
+});
+document.getElementById('backToLanding').addEventListener('click', backToLanding);
+document.getElementById('filterBed').addEventListener('change', renderAreaPage);
+document.getElementById('filterType').addEventListener('change', renderAreaPage);
+document.getElementById('openPostFromArea').addEventListener('click', ()=>goToPostForm(currentArea));
 
 document.getElementById('reportForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
@@ -762,6 +1040,7 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
   e.target.reset();
   document.getElementById('f-rooms').value = "2";
   statusMsg.textContent = "Posted — now visible to everyone searching " + area + ".";
+  goToArea(area);
 });
 
 loadReports();
