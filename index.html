@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khoj — today's rent rates, Chattogram</title>
+<title id="pageTitle">খোঁজ — চট্টগ্রামের আজকের ভাড়ার রেট</title>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Schibsted+Grotesk:wght@400;500;600&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{
+    --font-display:'Baloo Da 2', cursive;
+    --font-body:'Hind Siliguri', sans-serif;
     --wall:#EDE4D0;
     --wall-shadow:#E0D4B8;
     --board:#243128;
@@ -27,11 +29,15 @@
     --mute:#B7AD8E;
   }
   *{box-sizing:border-box;}
+  body[data-lang="en"]{
+    --font-display:'Kalam', cursive;
+    --font-body:'Schibsted Grotesk', sans-serif;
+  }
   body{
     margin:0;
     background:var(--wall);
     color:var(--ink);
-    font-family:'Schibsted Grotesk', sans-serif;
+    font-family:var(--font-body);
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
@@ -58,9 +64,33 @@
     color:var(--grey);
     text-align:right;
   }
+  .header-right{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:8px;
+  }
+  .lang-toggle{
+    display:flex;
+    border:1.5px solid var(--ink);
+    border-radius:20px;
+    overflow:hidden;
+  }
+  .lang-btn{
+    font-family:var(--font-body);
+    font-size:11.5px;
+    font-weight:600;
+    padding:5px 12px;
+    border:none;
+    background:var(--chalk);
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .lang-btn + .lang-btn{border-left:1.5px solid var(--ink);}
+  .lang-btn.active{background:var(--awning); color:var(--chalk);}
 
   h1{
-    font-family:'Kalam', cursive;
+    font-family:var(--font-display);
     font-weight:700;
     font-size:clamp(30px,5.2vw,46px);
     line-height:1.15;
@@ -84,7 +114,7 @@
     position:relative;
   }
   .board-title{
-    font-family:'Kalam', cursive;
+    font-family:var(--font-display);
     font-size:15px;
     color:#D9CFA8;
     margin-bottom:10px;
@@ -95,7 +125,7 @@
     flex-wrap:wrap;
   }
   .board-stat .num{
-    font-family:'Kalam', cursive;
+    font-family:var(--font-display);
     font-weight:700;
     font-size:34px;
     display:block;
@@ -109,7 +139,7 @@
 
   section.block{margin-bottom:50px;}
   .block-head h2{
-    font-family:'Kalam', cursive;
+    font-family:var(--font-display);
     font-weight:700;
     font-size:23px;
     margin:0 0 4px;
@@ -168,7 +198,7 @@
     margin-bottom:6px;
   }
   .tag .price{
-    font-family:'Kalam', cursive;
+    font-family:var(--font-display);
     font-weight:700;
     font-size:21px;
     color:var(--tagred);
@@ -182,7 +212,7 @@
     margin-bottom:6px;
   }
   input[type=text], select{
-    font-family:'Schibsted Grotesk', sans-serif;
+    font-family:var(--font-body);
     font-size:15px;
     padding:11px 13px;
     border:1px solid var(--ink);
@@ -202,7 +232,7 @@
     box-shadow:3px 3px 0 rgba(0,0,0,0.08);
   }
   .stall-name{
-    font-family:'Kalam', cursive;
+    font-family:var(--font-display);
     font-weight:700;
     font-size:18px;
     color:var(--awning-dark);
@@ -252,7 +282,7 @@
     border-radius:20px;
     font-size:11px;
     cursor:pointer;
-    font-family:'Schibsted Grotesk', sans-serif;
+    font-family:var(--font-body);
   }
   .mini-btn:hover{border-color:var(--awning); color:var(--awning-dark);}
   .mini-btn:disabled{opacity:0.5; cursor:default;}
@@ -279,7 +309,7 @@
   label{font-size:12.5px;color:var(--grey);}
   input,select{width:100%;}
   textarea{
-    font-family:'Schibsted Grotesk', sans-serif;
+    font-family:var(--font-body);
     font-size:14px;
     padding:10px 12px;
     border:1px solid var(--ink);
@@ -291,7 +321,7 @@
     min-height:58px;
   }
   button.submit-btn{
-    font-family:'Kalam', cursive;
+    font-family:var(--font-display);
     font-weight:700;
     font-size:16px;
     background:var(--awning);
@@ -318,7 +348,7 @@
     margin-bottom:46px;
   }
   .about h3{
-    font-family:'Kalam', cursive;
+    font-family:var(--font-display);
     font-size:16px;
     margin:0 0 8px;
     color:var(--ink);
@@ -349,7 +379,7 @@
     background:none;
     border:none;
     padding:0 0 16px;
-    font-family:'Schibsted Grotesk', sans-serif;
+    font-family:var(--font-body);
   }
   .back-link:hover{text-decoration:underline;}
   .area-header{
@@ -361,7 +391,7 @@
     margin-bottom:16px;
   }
   .area-header h2{
-    font-family:'Kalam',cursive;
+    font-family:var(--font-display);
     font-size:26px;
     margin:0;
     color:var(--ink);
@@ -381,7 +411,7 @@
     text-align:center;
   }
   .stat-cell:last-child{border-right:none;}
-  .stat-cell .v{font-family:'Kalam',cursive;font-weight:700;font-size:19px;color:var(--awning-dark);}
+  .stat-cell .v{font-family:var(--font-display);font-weight:700;font-size:19px;color:var(--awning-dark);}
   .stat-cell .l{font-size:10.5px;color:var(--grey);margin-top:3px;}
 
   .filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
@@ -402,7 +432,7 @@
     background:var(--chalk);
     border:1px dashed var(--mute);
   }
-  .empty-state .headline{font-family:'Kalam',cursive;font-size:18px;color:var(--awning-dark);margin-bottom:8px;}
+  .empty-state .headline{font-family:var(--font-display);font-size:18px;color:var(--awning-dark);margin-bottom:8px;}
   .empty-state p{font-size:13.5px;color:var(--grey);max-width:34ch;margin:0 auto 16px;}
 
   .tag.clickable{cursor:pointer;font-family:inherit;text-align:left;}
@@ -411,6 +441,7 @@
   @media (max-width:520px){
     header{flex-direction:column;gap:12px;align-items:flex-start;}
     .locale{text-align:left;}
+    .header-right{align-items:flex-start;}
     .field-row{flex-direction:column;}
     .board-stats{gap:22px;}
     .listing{flex-direction:column; gap:2px;}
@@ -425,46 +456,52 @@
 
   <header>
     <img class="logo" src="logo.png" alt="Khoj — Bhara age, bhabna pore">
-    <div class="locale">Chattogram rent stall<br>run by renters, for renters</div>
+    <div class="header-right">
+      <div class="locale" data-i18n-html="brandTagline">চট্টগ্রামের ভাড়ার আড্ডা<br>ভাড়াটেদের জন্য, ভাড়াটেদের দ্বারা</div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang-btn="bn">বাং</button>
+        <button type="button" class="lang-btn" data-lang-btn="en">EN</button>
+      </div>
+    </div>
   </header>
 
-  <h1>What's today's rate for your area?</h1>
-  <p class="sub">Not what a broker quotes at the door. What people are actually paying, posted up by the people paying it — like a market rate board, for rent.</p>
+  <h1 data-i18n="heroTitle">আপনার এলাকার আজকের ভাড়া কত?</h1>
+  <p class="sub" data-i18n="heroSub">দালাল দরজায় যা বলে তা নয় — মানুষ আসলে যা দিচ্ছে, তারাই সেটা বোর্ডে তুলেছে। বাজারের রেট বোর্ডের মতো, শুধু ভাড়ার জন্য।</p>
 
   <div class="board">
-    <div class="board-title">on the board right now</div>
+    <div class="board-title" data-i18n="boardTitle">এখন বোর্ডে যা আছে</div>
     <div class="board-stats">
-      <div class="board-stat"><span class="num" id="statCount">0</span><span class="lbl">rates posted</span></div>
-      <div class="board-stat"><span class="num" id="statAreas">0</span><span class="lbl">areas covered</span></div>
-      <div class="board-stat"><span class="num" id="statHidden">0</span><span class="lbl">flag a hidden charge</span></div>
+      <div class="board-stat"><span class="num" id="statCount">0</span><span class="lbl" data-i18n="statPosted">ভাড়া পোস্ট হয়েছে</span></div>
+      <div class="board-stat"><span class="num" id="statAreas">0</span><span class="lbl" data-i18n="statAreas">এলাকা কভার করা হয়েছে</span></div>
+      <div class="board-stat"><span class="num" id="statHidden">0</span><span class="lbl" data-i18n="statHidden">লুকানো চার্জ শনাক্ত হয়েছে</span></div>
     </div>
   </div>
 
   <div id="landingView">
     <section class="block">
       <div class="block-head">
-        <h2>Cheapest to priciest</h2>
-        <p>Median rent per area, with the reported range and how many rates it's based on. Tap one to see the full picture.</p>
+        <h2 data-i18n="ladderHeading">সস্তা থেকে দামি</h2>
+        <p data-i18n="ladderSub">প্রতিটি এলাকার গড় ভাড়া, রিপোর্ট করা রেঞ্জ ও কতগুলো রিপোর্টের ভিত্তিতে তা দেখানো হলো — একটিতে ট্যাপ করে পুরো চিত্র দেখুন।</p>
       </div>
       <div class="tags-row" id="ladder"></div>
     </section>
 
     <section class="block" id="listingsBlock">
       <div class="block-head">
-        <h2>Every rate on the board</h2>
-        <p>Search an area, or browse the whole stall. Tap "still this rate?" to keep an entry fresh, or flag one that looks wrong.</p>
+        <h2 data-i18n="listingsHeading">বোর্ডে থাকা সব ভাড়া</h2>
+        <p data-i18n="listingsSub">একটি এলাকা খুঁজুন, অথবা পুরো বোর্ড ব্রাউজ করুন। কোনো এন্ট্রি ঠিক থাকলে "এখনও এই ভাড়া?"-তে ট্যাপ করুন, ভুল মনে হলে ফ্ল্যাগ করুন।</p>
       </div>
       <div class="search-row">
-        <input type="text" id="areaSearch" placeholder="Nasirabad, GEC, Khulshi…">
+        <input type="text" id="areaSearch" placeholder="নাসিরাবাদ, জিইসি, খুলশী…" data-i18n-ph="searchPlaceholder">
       </div>
-      <p class="search-hint">Leave it blank to see everything, or press enter to jump to that area's page.</p>
-      <div id="listings"><p class="empty">Loading…</p></div>
+      <p class="search-hint" data-i18n="searchHint">খালি রেখে সবকিছু দেখুন, অথবা এন্টার চেপে সরাসরি সেই এলাকার পেজে যান।</p>
+      <div id="listings"><p class="empty" data-i18n="loading">লোড হচ্ছে…</p></div>
     </section>
   </div>
 
   <!-- ================= AREA PAGE ================= -->
   <div class="area-page" id="areaPage">
-    <button type="button" class="back-link" id="backToLanding">‹ back to all areas</button>
+    <button type="button" class="back-link" id="backToLanding" data-i18n="backLink">‹ সব এলাকায় ফিরে যান</button>
 
     <div class="area-header">
       <h2 id="areaName">—</h2>
@@ -475,18 +512,18 @@
 
     <div class="filter-row">
       <select id="filterBed">
-        <option value="">All bedrooms</option>
-        <option value="1">1 bed</option>
-        <option value="2">2 bed</option>
-        <option value="3">3 bed</option>
-        <option value="4+">4+ bed</option>
+        <option value="" data-i18n="filterAllBed">সব বেডরুম</option>
+        <option value="1" data-i18n="filterBed1">১ বেড</option>
+        <option value="2" data-i18n="filterBed2">২ বেড</option>
+        <option value="3" data-i18n="filterBed3">৩ বেড</option>
+        <option value="4+" data-i18n="filterBed4">৪+ বেড</option>
       </select>
       <select id="filterType">
-        <option value="">All property types</option>
-        <option>Flat</option>
-        <option>Room / single unit</option>
-        <option>Sublet</option>
-        <option>House (full)</option>
+        <option value="" data-i18n="filterAllType">সব ধরনের প্রপার্টি</option>
+        <option value="Flat" data-i18n="typeFlat">ফ্ল্যাট</option>
+        <option value="Room / single unit" data-i18n="typeRoom">রুম / একক ইউনিট</option>
+        <option value="Sublet" data-i18n="typeSublet">সাবলেট</option>
+        <option value="House (full)" data-i18n="typeHouse">পুরো বাড়ি</option>
       </select>
     </div>
 
@@ -495,106 +532,317 @@
     <div id="areaListings"></div>
 
     <div class="cta-row" style="margin-top:22px;">
-      <button type="button" class="submit-btn" id="openPostFromArea">Post your rate for this area</button>
+      <button type="button" class="submit-btn" id="openPostFromArea" data-i18n="postForArea">এই এলাকার জন্য ভাড়া পোস্ট করুন</button>
     </div>
   </div>
 
   <section class="block">
     <div class="block-head">
-      <h2>Post your own rate</h2>
-      <p>Under a minute. No name, no phone number, nothing that identifies you.</p>
+      <h2 data-i18n="postHeading">আপনার ভাড়া পোস্ট করুন</h2>
+      <p data-i18n="postSub">এক মিনিটেরও কম সময়। কোনো নাম না, ফোন নম্বর না, পরিচয় প্রকাশ পাবে এমন কিছুই না।</p>
     </div>
     <form id="reportForm">
       <div class="field-row">
         <div class="field">
-          <label for="f-area">Area</label>
-          <input type="text" id="f-area" placeholder="Nasirabad, Road 4" required>
+          <label for="f-area" data-i18n="labelArea">এলাকা</label>
+          <input type="text" id="f-area" placeholder="নাসিরাবাদ, রোড ৪" data-i18n-ph="phArea" required>
         </div>
         <div class="field">
-          <label for="f-type">Place type</label>
+          <label for="f-type" data-i18n="labelType">প্রপার্টির ধরন</label>
           <select id="f-type">
-            <option>Flat</option>
-            <option>Room / single unit</option>
-            <option>Sublet</option>
-            <option>House (full)</option>
+            <option value="Flat" data-i18n="typeFlat">ফ্ল্যাট</option>
+            <option value="Room / single unit" data-i18n="typeRoom">রুম / একক ইউনিট</option>
+            <option value="Sublet" data-i18n="typeSublet">সাবলেট</option>
+            <option value="House (full)" data-i18n="typeHouse">পুরো বাড়ি</option>
           </select>
         </div>
       </div>
       <div class="field-row">
         <div class="field">
-          <label for="f-rooms">Bedrooms</label>
+          <label for="f-rooms" data-i18n="labelRooms">বেডরুম</label>
           <select id="f-rooms">
-            <option>1</option>
-            <option selected>2</option>
-            <option>3</option>
-            <option>4+</option>
+            <option value="1" data-i18n="rooms1">১</option>
+            <option value="2" selected data-i18n="rooms2">২</option>
+            <option value="3" data-i18n="rooms3">৩</option>
+            <option value="4+" data-i18n="rooms4">৪+</option>
           </select>
         </div>
         <div class="field">
-          <label for="f-rent">Monthly rent (Tk)</label>
-          <input type="text" id="f-rent" placeholder="18000" inputmode="numeric" required>
+          <label for="f-rent" data-i18n="labelRent">মাসিক ভাড়া (টাকা)</label>
+          <input type="text" id="f-rent" placeholder="১৮০০০" data-i18n-ph="phRent" inputmode="numeric" required>
         </div>
         <div class="field">
-          <label for="f-advance">Advance (months)</label>
-          <input type="text" id="f-advance" placeholder="3" inputmode="numeric">
+          <label for="f-advance" data-i18n="labelAdvance">অগ্রিম (মাস)</label>
+          <input type="text" id="f-advance" placeholder="৩" data-i18n-ph="phAdvance" inputmode="numeric">
         </div>
       </div>
       <div class="field-row">
         <div class="field">
-          <label for="f-hidden">Hidden or extra charge, if any</label>
-          <input type="text" id="f-hidden" placeholder="e.g. Tk 1,500/month 'gas line' fee">
+          <label for="f-hidden" data-i18n="labelHidden">লুকানো বা অতিরিক্ত চার্জ থাকলে লিখুন</label>
+          <input type="text" id="f-hidden" placeholder="যেমন: মাসে ১,৫০০ টাকা 'গ্যাস লাইন' ফি" data-i18n-ph="phHidden">
         </div>
         <div class="field">
-          <label for="f-year">Year you moved in</label>
-          <input type="text" id="f-year" placeholder="2025" inputmode="numeric">
+          <label for="f-year" data-i18n="labelYear">যে বছর উঠেছেন</label>
+          <input type="text" id="f-year" placeholder="২০২৫" data-i18n-ph="phYear" inputmode="numeric">
         </div>
       </div>
       <div class="field-row">
         <div class="field">
-          <label for="f-note">Anything else worth knowing</label>
-          <textarea id="f-note" placeholder="Landlord raised rent mid-lease, building has a generator, water pressure is bad in the dry season…"></textarea>
+          <label for="f-note" data-i18n="labelNote">জানার মতো আর কিছু থাকলে</label>
+          <textarea id="f-note" placeholder="যেমন: লিজের মাঝপথে ভাড়া বাড়িয়েছে, জেনারেটর আছে, শুকনো মৌসুমে পানির চাপ কম…" data-i18n-ph="phNote"></textarea>
         </div>
       </div>
-      <button type="submit" class="submit-btn">Post this rate</button>
+      <button type="submit" class="submit-btn" data-i18n="submitBtn">এই ভাড়াটি পোস্ট করুন</button>
       <div class="status-msg" id="statusMsg" role="status"></div>
     </form>
   </section>
 
   <div class="about">
-    <h3>How to read the numbers</h3>
+    <h3 data-i18n="aboutHeading">সংখ্যাগুলো কীভাবে পড়বেন</h3>
     <ul>
-      <li>Every rate shows how long ago it was last confirmed. Anything past 6 months is marked as possibly outdated — rent drifts, and we'd rather say so than pretend it hasn't.</li>
-      <li>Area prices are shown as a range built from recent, un-flagged reports, not one exact figure — real markets are ranges, not single numbers.</li>
-      <li>Rates that sit far outside an area's usual range, or get flagged by several visitors, are kept visible but excluded from that area's median so a few odd entries can't skew it.</li>
-      <li>This board isn't cross-checked against every listing site automatically — treat it as a strong starting point for negotiation, not a verified appraisal.</li>
+      <li data-i18n="aboutBullet1">প্রতিটি ভাড়ার পাশে দেখানো হয় সেটা সবশেষ কবে নিশ্চিত করা হয়েছে। ৬ মাসের বেশি পুরনো হলে তা সম্ভাব্য পুরনো হিসেবে চিহ্নিত করা হয় — ভাড়া তো বদলায়, তাই লুকিয়ে না রেখে বলে দেওয়াই ভালো।</li>
+      <li data-i18n="aboutBullet2">এলাকার ভাড়া একটিমাত্র সংখ্যা নয়, বরং সাম্প্রতিক ও ফ্ল্যাগ-না-হওয়া রিপোর্টের ভিত্তিতে একটি রেঞ্জ হিসেবে দেখানো হয় — বাস্তব বাজার তো একটা সংখ্যা নয়, একটা রেঞ্জ।</li>
+      <li data-i18n="aboutBullet3">এলাকার সাধারণ রেঞ্জের চেয়ে অনেক দূরে থাকা, বা একাধিক দর্শকের ফ্ল্যাগ পাওয়া এন্ট্রিগুলো দৃশ্যমান থাকে কিন্তু গড় হিসাব থেকে বাদ থাকে, যাতে কয়েকটা অস্বাভাবিক এন্ট্রি পুরো হিসাব নষ্ট করতে না পারে।</li>
+      <li data-i18n="aboutBullet4">এই বোর্ড প্রতিটি লিস্টিং সাইটের সাথে স্বয়ংক্রিয়ভাবে মিলিয়ে দেখা হয় না — এটাকে দরকষাকষির একটা শক্ত সূচনা বিন্দু হিসেবে ধরুন, যাচাইকৃত মূল্যায়ন হিসেবে নয়।</li>
     </ul>
   </div>
 
-  <footer>
-    Khoj is an independent, unverified board — every rate is self-reported and not checked against a lease or a landlord. It exists to give renters a rough sense of what's normal before they negotiate, not to make a claim about any specific building or owner.
+  <footer data-i18n="footerText">
+    খোঁজ একটি স্বাধীন, অযাচাইকৃত বোর্ড — প্রতিটি ভাড়া স্ব-প্রতিবেদিত, কোনো লিজ বা মালিকের সাথে মিলিয়ে দেখা হয় না। এটি ভাড়াটেদের দরকষাকষির আগে একটা মোটামুটি ধারণা দেওয়ার জন্য, কোনো নির্দিষ্ট বাড়ি বা মালিক সম্পর্কে দাবি করার জন্য নয়।
   </footer>
 
 </div>
 
 <script>
-// ----  config ----
+// ---- Supabase config ----
 // Replace these two with your own project's values (Project Settings -> API).
 // The anon key is safe to expose in client-side code; row-level security
 // policies on the "reports" table are what actually control access.
-const SUPABASE_URL = "https://wporuiiqqctmhddmssoe.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwb3J1aWlxcWN0bWhkZG1zc29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3OTQ3MTYsImV4cCI6MjEwNDM3MDcxNn0.XALjEM8zorHJeF6f4NxlvJ6Ht-L9NxI2cOux8INKAQs";
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const NOW = new Date();
 const LAST_SUBMIT_KEY = "khoj-last-submit";
 const FLAGGED_KEY = "khoj-flagged-ids";
 const SUBMIT_COOLDOWN_MS = 90 * 1000;
+const LANG_KEY = "khoj-lang";
 
 let allReports = [];
+let LANG = localStorage.getItem(LANG_KEY) || "bn";
+
+/* ---------- i18n ---------- */
+const STRINGS = {
+  bn: {
+    pageTitle: "খোঁজ — চট্টগ্রামের আজকের ভাড়ার রেট",
+    brandTagline: "চট্টগ্রামের ভাড়ার আড্ডা<br>ভাড়াটেদের জন্য, ভাড়াটেদের দ্বারা",
+    heroTitle: "আপনার এলাকার আজকের ভাড়া কত?",
+    heroSub: "দালাল দরজায় যা বলে তা নয় — মানুষ আসলে যা দিচ্ছে, তারাই সেটা বোর্ডে তুলেছে। বাজারের রেট বোর্ডের মতো, শুধু ভাড়ার জন্য।",
+    boardTitle: "এখন বোর্ডে যা আছে",
+    statPosted: "ভাড়া পোস্ট হয়েছে",
+    statAreas: "এলাকা কভার করা হয়েছে",
+    statHidden: "লুকানো চার্জ শনাক্ত হয়েছে",
+    ladderHeading: "সস্তা থেকে দামি",
+    ladderSub: "প্রতিটি এলাকার গড় ভাড়া, রিপোর্ট করা রেঞ্জ ও কতগুলো রিপোর্টের ভিত্তিতে তা দেখানো হলো — একটিতে ট্যাপ করে পুরো চিত্র দেখুন।",
+    listingsHeading: "বোর্ডে থাকা সব ভাড়া",
+    listingsSub: 'একটি এলাকা খুঁজুন, অথবা পুরো বোর্ড ব্রাউজ করুন। কোনো এন্ট্রি ঠিক থাকলে "এখনও এই ভাড়া?"-তে ট্যাপ করুন, ভুল মনে হলে ফ্ল্যাগ করুন।',
+    searchPlaceholder: "নাসিরাবাদ, জিইসি, খুলশী…",
+    searchHint: "খালি রেখে সবকিছু দেখুন, অথবা এন্টার চেপে সরাসরি সেই এলাকার পেজে যান।",
+    loading: "লোড হচ্ছে…",
+    backLink: "‹ সব এলাকায় ফিরে যান",
+    filterAllBed: "সব বেডরুম",
+    filterBed1: "১ বেড", filterBed2: "২ বেড", filterBed3: "৩ বেড", filterBed4: "৪+ বেড",
+    filterAllType: "সব ধরনের প্রপার্টি",
+    typeFlat: "ফ্ল্যাট", typeRoom: "রুম / একক ইউনিট", typeSublet: "সাবলেট", typeHouse: "পুরো বাড়ি",
+    postForArea: "এই এলাকার জন্য ভাড়া পোস্ট করুন",
+    postHeading: "আপনার ভাড়া পোস্ট করুন",
+    postSub: "এক মিনিটেরও কম সময়। কোনো নাম না, ফোন নম্বর না, পরিচয় প্রকাশ পাবে এমন কিছুই না।",
+    labelArea: "এলাকা", phArea: "নাসিরাবাদ, রোড ৪",
+    labelType: "প্রপার্টির ধরন",
+    labelRooms: "বেডরুম",
+    rooms1: "১", rooms2: "২", rooms3: "৩", rooms4: "৪+",
+    labelRent: "মাসিক ভাড়া (টাকা)", phRent: "১৮০০০",
+    labelAdvance: "অগ্রিম (মাস)", phAdvance: "৩",
+    labelHidden: "লুকানো বা অতিরিক্ত চার্জ থাকলে লিখুন", phHidden: "যেমন: মাসে ১,৫০০ টাকা 'গ্যাস লাইন' ফি",
+    labelYear: "যে বছর উঠেছেন", phYear: "২০২৫",
+    labelNote: "জানার মতো আর কিছু থাকলে", phNote: "যেমন: লিজের মাঝপথে ভাড়া বাড়িয়েছে, জেনারেটর আছে, শুকনো মৌসুমে পানির চাপ কম…",
+    submitBtn: "এই ভাড়াটি পোস্ট করুন",
+    aboutHeading: "সংখ্যাগুলো কীভাবে পড়বেন",
+    aboutBullet1: "প্রতিটি ভাড়ার পাশে দেখানো হয় সেটা সবশেষ কবে নিশ্চিত করা হয়েছে। ৬ মাসের বেশি পুরনো হলে তা সম্ভাব্য পুরনো হিসেবে চিহ্নিত করা হয় — ভাড়া তো বদলায়, তাই লুকিয়ে না রেখে বলে দেওয়াই ভালো।",
+    aboutBullet2: "এলাকার ভাড়া একটিমাত্র সংখ্যা নয়, বরং সাম্প্রতিক ও ফ্ল্যাগ-না-হওয়া রিপোর্টের ভিত্তিতে একটি রেঞ্জ হিসেবে দেখানো হয় — বাস্তব বাজার তো একটা সংখ্যা নয়, একটা রেঞ্জ।",
+    aboutBullet3: "এলাকার সাধারণ রেঞ্জের চেয়ে অনেক দূরে থাকা, বা একাধিক দর্শকের ফ্ল্যাগ পাওয়া এন্ট্রিগুলো দৃশ্যমান থাকে কিন্তু গড় হিসাব থেকে বাদ থাকে, যাতে কয়েকটা অস্বাভাবিক এন্ট্রি পুরো হিসাব নষ্ট করতে না পারে।",
+    aboutBullet4: "এই বোর্ড প্রতিটি লিস্টিং সাইটের সাথে স্বয়ংক্রিয়ভাবে মিলিয়ে দেখা হয় না — এটাকে দরকষাকষির একটা শক্ত সূচনা বিন্দু হিসেবে ধরুন, যাচাইকৃত মূল্যায়ন হিসেবে নয়।",
+    footerText: "খোঁজ একটি স্বাধীন, অযাচাইকৃত বোর্ড — প্রতিটি ভাড়া স্ব-প্রতিবেদিত, কোনো লিজ বা মালিকের সাথে মিলিয়ে দেখা হয় না। এটি ভাড়াটেদের দরকষাকষির আগে একটা মোটামুটি ধারণা দেওয়ার জন্য, কোনো নির্দিষ্ট বাড়ি বা মালিক সম্পর্কে দাবি করার জন্য নয়।",
+    typicalRent: "সাধারণ ভাড়া",
+    reportedRange: "রিপোর্ট করা রেঞ্জ",
+    mostRecentReport: "সর্বশেষ রিপোর্ট",
+    emptyLanding: "এখনও কিছু পোস্ট হয়নি। নিচে প্রথম ভাড়াটি যোগ করুন।",
+    emptyAreaSub: "প্রথম ভাড়াটে হিসেবে বোর্ডে ভাড়া তুলুন — এক মিনিটেরও কম সময় লাগবে, সম্পূর্ণ বেনামে।",
+    postFirstRate: "প্রথম ভাড়া পোস্ট করুন",
+    noFilterMatchHeadline: "এই ফিল্টারে কোনো রিপোর্ট নেই।",
+    noFilterMatchSub: "বেডরুম বা প্রপার্টি টাইপ ফিল্টার বদলে দেখুন, অথবা নিজে একটি পোস্ট করুন।",
+    couldNotLoad: "এখন বোর্ড লোড করা গেল না — সুপাবেস সংযোগ পরীক্ষা করুন।",
+    outlierNote: "এই এলাকার সাধারণ সীমার বাইরে — যাচাই করে নেওয়া ভালো",
+    heavilyFlaggedNote: "একাধিক দর্শক এটি ফ্ল্যাগ করেছেন",
+    mayBeOutdated: "পুরনো হতে পারে",
+    btnConfirm: "এখনও এই ভাড়া?", btnFlag: "ভুল মনে হচ্ছে", btnFlagged: "ফ্ল্যাগ করা হয়েছে",
+    errAreaRent: "এলাকা ও মাসিক ভাড়া আবশ্যক।",
+    errRentNumber: "ভাড়াটি সংখ্যায় লিখুন, যেমন ১৮০০০।",
+    cooldownMsg: "আপনি এইমাত্র একটি ভাড়া পোস্ট করেছেন — আরেকটি যোগ করার আগে একটু অপেক্ষা করুন।",
+    postingMsg: "পোস্ট হচ্ছে…",
+    postFailMsg: "এখন পোস্ট করা গেল না। আবার চেষ্টা করুন।"
+  },
+  en: {
+    pageTitle: "Khoj — today's rent rates, Chattogram",
+    brandTagline: "Chattogram rent stall<br>run by renters, for renters",
+    heroTitle: "What's today's rate for your area?",
+    heroSub: "Not what a broker quotes at the door. What people are actually paying, posted up by the people paying it — like a market rate board, for rent.",
+    boardTitle: "on the board right now",
+    statPosted: "rates posted",
+    statAreas: "areas covered",
+    statHidden: "hidden charges flagged",
+    ladderHeading: "Cheapest to priciest",
+    ladderSub: "Median rent per area, with the reported range and how many rates it's based on. Tap one to see the full picture.",
+    listingsHeading: "Every rate on the board",
+    listingsSub: 'Search an area, or browse the whole stall. Tap "still this rate?" to keep an entry fresh, or flag one that looks wrong.',
+    searchPlaceholder: "Nasirabad, GEC, Khulshi…",
+    searchHint: "Leave it blank to see everything, or press enter to jump to that area's page.",
+    loading: "Loading…",
+    backLink: "‹ back to all areas",
+    filterAllBed: "All bedrooms",
+    filterBed1: "1 bed", filterBed2: "2 bed", filterBed3: "3 bed", filterBed4: "4+ bed",
+    filterAllType: "All property types",
+    typeFlat: "Flat", typeRoom: "Room / single unit", typeSublet: "Sublet", typeHouse: "House (full)",
+    postForArea: "Post your rate for this area",
+    postHeading: "Post your own rate",
+    postSub: "Under a minute. No name, no phone number, nothing that identifies you.",
+    labelArea: "Area", phArea: "Nasirabad, Road 4",
+    labelType: "Place type",
+    labelRooms: "Bedrooms",
+    rooms1: "1", rooms2: "2", rooms3: "3", rooms4: "4+",
+    labelRent: "Monthly rent (Tk)", phRent: "18000",
+    labelAdvance: "Advance (months)", phAdvance: "3",
+    labelHidden: "Hidden or extra charge, if any", phHidden: "e.g. Tk 1,500/month 'gas line' fee",
+    labelYear: "Year you moved in", phYear: "2025",
+    labelNote: "Anything else worth knowing", phNote: "Landlord raised rent mid-lease, building has a generator, water pressure is bad in the dry season…",
+    submitBtn: "Post this rate",
+    aboutHeading: "How to read the numbers",
+    aboutBullet1: "Every rate shows how long ago it was last confirmed. Anything past 6 months is marked as possibly outdated — rent drifts, and we'd rather say so than pretend it hasn't.",
+    aboutBullet2: "Area prices are shown as a range built from recent, un-flagged reports, not one exact figure — real markets are ranges, not single numbers.",
+    aboutBullet3: "Rates that sit far outside an area's usual range, or get flagged by several visitors, are kept visible but excluded from that area's median so a few odd entries can't skew it.",
+    aboutBullet4: "This board isn't cross-checked against every listing site automatically — treat it as a strong starting point for negotiation, not a verified appraisal.",
+    footerText: "Khoj is an independent, unverified board — every rate is self-reported and not checked against a lease or a landlord. It exists to give renters a rough sense of what's normal before they negotiate, not to make a claim about any specific building or owner.",
+    typicalRent: "typical rent",
+    reportedRange: "reported range",
+    mostRecentReport: "most recent report",
+    emptyLanding: "Nothing posted here yet. Be the first to add a rate below.",
+    emptyAreaSub: "Be the first renter to put the rate on the board — it takes under a minute and stays anonymous.",
+    postFirstRate: "Post the first rate",
+    noFilterMatchHeadline: "No reports match those filters.",
+    noFilterMatchSub: "Try widening the bedroom or property type filter, or post one yourself.",
+    couldNotLoad: "Could not load the board right now — check the Supabase connection.",
+    outlierNote: "far from this area's usual range — worth double-checking",
+    heavilyFlaggedNote: "flagged by several visitors",
+    mayBeOutdated: "may be outdated",
+    btnConfirm: "still this rate?", btnFlag: "looks off", btnFlagged: "flagged",
+    errAreaRent: "Area and monthly rent are required.",
+    errRentNumber: "Enter the rent as a number, like 18000.",
+    cooldownMsg: "You just posted a rate — give it a minute before adding another.",
+    postingMsg: "Posting…",
+    postFailMsg: "Couldn't post that just now. Try again."
+  }
+};
+
+function t(key){
+  return (STRINGS[LANG] && STRINGS[LANG][key] !== undefined) ? STRINGS[LANG][key] : (STRINGS.en[key] !== undefined ? STRINGS.en[key] : key);
+}
+
+const TYPE_KEY_BY_VALUE = {
+  "Flat": "typeFlat",
+  "Room / single unit": "typeRoom",
+  "Sublet": "typeSublet",
+  "House (full)": "typeHouse"
+};
+function typeLabel(raw){
+  const key = TYPE_KEY_BY_VALUE[raw];
+  return key ? t(key) : raw;
+}
+
+function bnNum(n){
+  return String(n).replace(/[0-9]/g, d => "০১২৩৪৫৬৭৮৯"[d]);
+}
+function toAsciiDigits(str){
+  const map = {"০":"0","১":"1","২":"2","৩":"3","৪":"4","৫":"5","৬":"6","৭":"7","৮":"8","৯":"9"};
+  return String(str).replace(/[০-৯]/g, d => map[d]);
+}
+function localizeNum(n){
+  return LANG === "bn" ? bnNum(n) : String(n);
+}
+
+function bedLabel(rooms){
+  return LANG === "bn" ? (bnNum(rooms) + " বেড") : (rooms + " bed");
+}
+function advanceLabel(n){
+  return LANG === "bn" ? ("অগ্রিম " + bnNum(n) + " মাস") : ("advance " + n + " mo");
+}
+function reportCountLabel(n){
+  return LANG === "bn" ? (bnNum(n) + "টি রিপোর্টের ভিত্তিতে") : ("based on " + n + " report" + (n === 1 ? "" : "s"));
+}
+function reportsOnFileLabel(n){
+  return LANG === "bn" ? (bnNum(n) + "টি রিপোর্ট আছে") : (n + " report" + (n === 1 ? "" : "s") + " on file");
+}
+function reportsOnFileWord(n){
+  return LANG === "bn" ? "টি রিপোর্ট আছে" : (n === 1 ? "report on file" : "reports on file");
+}
+function distTitleLabel(n){
+  return LANG === "bn"
+    ? (bnNum(n) + "টি রিপোর্ট জুড়ে ভাড়ার বিস্তার")
+    : ("how rents are spread across " + n + " report" + (n === 1 ? "" : "s"));
+}
+function nobodyChalkedLabel(area){
+  return LANG === "bn" ? ("এখনও কেউ " + escapeHtml(area) + "-এ ভাড়া লেখেনি।") : ("Nobody's chalked " + escapeHtml(area) + " yet.");
+}
+function postedMsgLabel(area){
+  return LANG === "bn"
+    ? ("পোস্ট হয়ে গেছে — এখন থেকে যে কেউ " + escapeHtml(area) + " খুঁজলে এটি দেখতে পাবে।")
+    : ("Posted — now visible to everyone searching " + area + ".");
+}
+function rankLabel(i){
+  return "#" + localizeNum(i);
+}
+
+function applyStaticTranslations(){
+  document.documentElement.lang = LANG;
+  document.body.setAttribute('data-lang', LANG);
+  localStorage.setItem(LANG_KEY, LANG);
+
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    el.textContent = t(el.getAttribute('data-i18n'));
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    el.innerHTML = t(el.getAttribute('data-i18n-html'));
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph')));
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.langBtn === LANG);
+  });
+}
+
+function setLang(newLang){
+  if(newLang !== 'bn' && newLang !== 'en') return;
+  LANG = newLang;
+  applyStaticTranslations();
+  renderTags();
+  render(document.getElementById('areaSearch').value);
+  if(currentArea) renderAreaPage();
+}
 
 function fmtTk(n){
   n = Number(n);
   if(isNaN(n)) return "—";
+  if(LANG === "bn") return "৳" + n.toLocaleString('bn-BD');
   return "Tk " + n.toLocaleString('en-IN');
 }
 
@@ -606,6 +854,10 @@ function monthsAgo(dateStr){
 
 function ageLabel(dateStr){
   const m = monthsAgo(dateStr);
+  if(LANG === "bn"){
+    if(m <= 0) return "এই মাসে নিশ্চিত করা হয়েছে";
+    return bnNum(m) + " মাস আগে নিশ্চিত করা হয়েছে";
+  }
   if(m <= 0) return "confirmed this month";
   if(m === 1) return "confirmed 1 mo ago";
   return "confirmed " + m + " mo ago";
@@ -665,11 +917,11 @@ function renderTags(){
     el.type = 'button';
     el.className = 'tag clickable';
     el.innerHTML =
-      '<div class="rank">#' + (i+1) + '</div>' +
+      '<div class="rank">' + rankLabel(i+1) + '</div>' +
       '<div class="area">' + escapeHtml(row.area) + '</div>' +
       '<div class="price">' + fmtTk(row.stats.median) + '</div>' +
       '<div class="range">' + fmtTk(row.stats.min) + '–' + fmtTk(row.stats.max) + '</div>' +
-      '<div class="count">based on ' + row.stats.count + ' report' + (row.stats.count===1?'':'s') + '</div>';
+      '<div class="count">' + reportCountLabel(row.stats.count) + '</div>';
     el.addEventListener('click', ()=>goToArea(row.area));
     ladderEl.appendChild(el);
   });
@@ -700,12 +952,12 @@ function renderDistribution(items){
     buckets[idx]++;
   });
   const maxCount = Math.max(...buckets);
-  let html = '<div class="dist-title">how rents are spread across ' + items.length + ' report' + (items.length===1?'':'s') + '</div><div class="dist-bars">';
+  let html = '<div class="dist-title">' + distTitleLabel(items.length) + '</div><div class="dist-bars">';
   buckets.forEach((c,i)=>{
     const lo = min + i*bucketSize;
     const hi = i === bucketCount-1 ? max : lo + bucketSize - 1;
     const pct = maxCount ? Math.max(4, Math.round((c/maxCount)*100)) : 4;
-    html += '<div class="dist-bar"><span class="bn">' + c + '</span><div class="fill' + (c===0?' zero':'') + '" style="height:' + pct + '%"></div><span class="bl">' + fmtTk(lo).replace('Tk ','') + '–' + fmtTk(hi).replace('Tk ','') + '</span></div>';
+    html += '<div class="dist-bar"><span class="bn">' + localizeNum(c) + '</span><div class="fill' + (c===0?' zero':'') + '" style="height:' + pct + '%"></div><span class="bl">' + fmtTk(lo).replace(/^(Tk |৳)/,'') + '–' + fmtTk(hi).replace(/^(Tk |৳)/,'') + '</span></div>';
   });
   html += '</div>';
   wrap.innerHTML = html;
@@ -722,9 +974,9 @@ function renderAreaPage(){
     document.getElementById('distWrap').innerHTML = "";
     document.getElementById('areaListings').innerHTML =
       '<div class="empty-state">' +
-        '<div class="headline">Nobody&rsquo;s chalked ' + escapeHtml(currentArea) + ' yet.</div>' +
-        '<p>Be the first renter to put the rate on the board — it takes under a minute and stays anonymous.</p>' +
-        '<button type="button" class="submit-btn" id="emptyStatePost">Post the first rate</button>' +
+        '<div class="headline">' + nobodyChalkedLabel(currentArea) + '</div>' +
+        '<p>' + t('emptyAreaSub') + '</p>' +
+        '<button type="button" class="submit-btn" id="emptyStatePost">' + t('postFirstRate') + '</button>' +
       '</div>';
     document.getElementById('emptyStatePost').addEventListener('click', ()=>goToPostForm(currentArea));
     return;
@@ -732,12 +984,12 @@ function renderAreaPage(){
 
   const stats = areaStats(items);
   const mostRecent = items.reduce((acc,r)=> monthsAgo(r.as_of) < monthsAgo(acc.as_of) ? r : acc, items[0]);
-  document.getElementById('areaFreshness').textContent = "most recent report: " + ageLabel(mostRecent.as_of);
+  document.getElementById('areaFreshness').textContent = t('mostRecentReport') + ": " + ageLabel(mostRecent.as_of);
 
   document.getElementById('areaStatStrip').innerHTML =
-    '<div class="stat-cell"><div class="v">' + fmtTk(stats.median) + '</div><div class="l">typical rent</div></div>' +
-    '<div class="stat-cell"><div class="v">' + fmtTk(stats.min) + '–' + fmtTk(stats.max) + '</div><div class="l">reported range</div></div>' +
-    '<div class="stat-cell"><div class="v">' + stats.count + '</div><div class="l">report' + (stats.count===1?'':'s') + ' on file</div></div>';
+    '<div class="stat-cell"><div class="v">' + fmtTk(stats.median) + '</div><div class="l">' + t('typicalRent') + '</div></div>' +
+    '<div class="stat-cell"><div class="v">' + fmtTk(stats.min) + '–' + fmtTk(stats.max) + '</div><div class="l">' + t('reportedRange') + '</div></div>' +
+    '<div class="stat-cell"><div class="v">' + localizeNum(stats.count) + '</div><div class="l">' + reportsOnFileWord(stats.count) + '</div></div>';
 
   const filters = currentFilters();
   const filtered = items.filter(r=>{
@@ -752,7 +1004,7 @@ function renderAreaPage(){
   listEl.innerHTML = "";
 
   if(filtered.length === 0){
-    listEl.innerHTML = '<div class="empty-state"><div class="headline">No reports match those filters.</div><p>Try widening the bedroom or property type filter, or post one yourself.</p></div>';
+    listEl.innerHTML = '<div class="empty-state"><div class="headline">' + t('noFilterMatchHeadline') + '</div><p>' + t('noFilterMatchSub') + '</p></div>';
     return;
   }
 
@@ -770,15 +1022,15 @@ function renderAreaPage(){
     const row = document.createElement('div');
     row.className = 'listing';
     row.innerHTML =
-      '<span class="desc">' + escapeHtml(r.type) + ', ' + escapeHtml(r.rooms) + ' bed' + (r.advance ? ' · advance ' + escapeHtml(String(r.advance)) + ' mo' : '') + '</span>' +
-      '<span class="price">' + fmtTk(r.rent) + '/mo</span>';
+      '<span class="desc">' + escapeHtml(typeLabel(r.type)) + ', ' + bedLabel(r.rooms) + (r.advance ? ' · ' + advanceLabel(r.advance) : '') + '</span>' +
+      '<span class="price">' + fmtTk(r.rent) + '/' + (LANG === 'bn' ? 'মাস' : 'mo') + '</span>';
     stall.appendChild(row);
 
     const noteBits = [];
     if(r.hidden && r.hidden.trim()) noteBits.push('<span class="flag">' + escapeHtml(r.hidden) + '</span>');
     if(r.note && r.note.trim()) noteBits.push(escapeHtml(r.note));
-    if(outlier) noteBits.push('<span class="flagged-note">far from this area&#39;s usual range — worth double-checking</span>');
-    if(heavilyFlagged) noteBits.push('<span class="flagged-note">flagged by several visitors</span>');
+    if(outlier) noteBits.push('<span class="flagged-note">' + t('outlierNote') + '</span>');
+    if(heavilyFlagged) noteBits.push('<span class="flagged-note">' + t('heavilyFlaggedNote') + '</span>');
     if(noteBits.length){
       const note = document.createElement('div');
       note.className = 'listing-note';
@@ -790,9 +1042,9 @@ function renderAreaPage(){
     actions.className = 'listing-actions';
     const alreadyFlagged = flaggedByMe.includes(r.id);
     actions.innerHTML =
-      '<span class="asof' + (outdated ? ' outdated' : '') + '">' + ageLabel(r.as_of) + (outdated ? ' · may be outdated' : '') + '</span>' +
-      '<button type="button" class="mini-btn" data-action="confirm" data-id="' + r.id + '">still this rate?</button>' +
-      '<button type="button" class="mini-btn" data-action="flag" data-id="' + r.id + '"' + (alreadyFlagged ? ' disabled' : '') + '>' + (alreadyFlagged ? 'flagged' : 'looks off') + '</button>';
+      '<span class="asof' + (outdated ? ' outdated' : '') + '">' + ageLabel(r.as_of) + (outdated ? ' · ' + t('mayBeOutdated') : '') + '</span>' +
+      '<button type="button" class="mini-btn" data-action="confirm" data-id="' + r.id + '">' + t('btnConfirm') + '</button>' +
+      '<button type="button" class="mini-btn" data-action="flag" data-id="' + r.id + '"' + (alreadyFlagged ? ' disabled' : '') + '>' + (alreadyFlagged ? t('btnFlagged') : t('btnFlag')) + '</button>';
     stall.appendChild(actions);
   });
 
@@ -856,7 +1108,7 @@ function render(filterText){
   listEl.innerHTML = "";
 
   if(filtered.length === 0){
-    listEl.innerHTML = '<p class="empty">Nothing posted here yet. Be the first to add a rate below.</p>';
+    listEl.innerHTML = '<p class="empty">' + t('emptyLanding') + '</p>';
     return;
   }
 
@@ -869,9 +1121,11 @@ function render(filterText){
     const stats = areaStats(items);
     const stall = document.createElement('div');
     stall.className = 'stall';
+    const summaryWord = LANG === 'bn' ? 'গড়' : 'median';
+    const rangeWord = LANG === 'bn' ? 'রেঞ্জ' : 'range';
     stall.innerHTML =
       '<div class="stall-name">' + escapeHtml(area) + '</div>' +
-      '<div class="stall-summary">median ' + fmtTk(stats.median) + ' · range ' + fmtTk(stats.min) + '–' + fmtTk(stats.max) + ' · ' + stats.count + ' report' + (stats.count===1?'':'s') + '</div>';
+      '<div class="stall-summary">' + summaryWord + ' ' + fmtTk(stats.median) + ' · ' + rangeWord + ' ' + fmtTk(stats.min) + '–' + fmtTk(stats.max) + ' · ' + reportsOnFileLabel(stats.count) + '</div>';
 
     items.forEach(r=>{
       const outdated = monthsAgo(r.as_of) >= 6;
@@ -881,15 +1135,15 @@ function render(filterText){
       const row = document.createElement('div');
       row.className = 'listing';
       row.innerHTML =
-        '<span class="desc">' + escapeHtml(r.type) + ', ' + escapeHtml(r.rooms) + ' bed' + (r.advance ? ' · advance ' + escapeHtml(String(r.advance)) + ' mo' : '') + '</span>' +
-        '<span class="price">' + fmtTk(r.rent) + '/mo</span>';
+        '<span class="desc">' + escapeHtml(typeLabel(r.type)) + ', ' + bedLabel(r.rooms) + (r.advance ? ' · ' + advanceLabel(r.advance) : '') + '</span>' +
+        '<span class="price">' + fmtTk(r.rent) + '/' + (LANG === 'bn' ? 'মাস' : 'mo') + '</span>';
       stall.appendChild(row);
 
       const noteBits = [];
       if(r.hidden && r.hidden.trim()) noteBits.push('<span class="flag">' + escapeHtml(r.hidden) + '</span>');
       if(r.note && r.note.trim()) noteBits.push(escapeHtml(r.note));
-      if(outlier) noteBits.push('<span class="flagged-note">far from this area&#39;s usual range — worth double-checking</span>');
-      if(heavilyFlagged) noteBits.push('<span class="flagged-note">flagged by several visitors</span>');
+      if(outlier) noteBits.push('<span class="flagged-note">' + t('outlierNote') + '</span>');
+      if(heavilyFlagged) noteBits.push('<span class="flagged-note">' + t('heavilyFlaggedNote') + '</span>');
       if(noteBits.length){
         const note = document.createElement('div');
         note.className = 'listing-note';
@@ -901,9 +1155,9 @@ function render(filterText){
       actions.className = 'listing-actions';
       const alreadyFlagged = flaggedByMe.includes(r.id);
       actions.innerHTML =
-        '<span class="asof' + (outdated ? ' outdated' : '') + '">' + ageLabel(r.as_of) + (outdated ? ' · may be outdated' : '') + '</span>' +
-        '<button type="button" class="mini-btn" data-action="confirm" data-id="' + r.id + '">still this rate?</button>' +
-        '<button type="button" class="mini-btn" data-action="flag" data-id="' + r.id + '"' + (alreadyFlagged ? ' disabled' : '') + '>' + (alreadyFlagged ? 'flagged' : 'looks off') + '</button>';
+        '<span class="asof' + (outdated ? ' outdated' : '') + '">' + ageLabel(r.as_of) + (outdated ? ' · ' + t('mayBeOutdated') : '') + '</span>' +
+        '<button type="button" class="mini-btn" data-action="confirm" data-id="' + r.id + '">' + t('btnConfirm') + '</button>' +
+        '<button type="button" class="mini-btn" data-action="flag" data-id="' + r.id + '"' + (alreadyFlagged ? ' disabled' : '') + '>' + (alreadyFlagged ? t('btnFlagged') : t('btnFlag')) + '</button>';
       stall.appendChild(actions);
     });
     listEl.appendChild(stall);
@@ -965,7 +1219,7 @@ async function loadReports(){
   if(error){
     console.error(error);
     document.getElementById('listings').innerHTML =
-      '<p class="empty">Could not load the board right now — check the Supabase connection.</p>';
+      '<p class="empty">' + t('couldNotLoad') + '</p>';
     return;
   }
 
@@ -995,18 +1249,18 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
   const rentRaw = document.getElementById('f-rent').value.trim();
 
   if(!area || !rentRaw){
-    statusMsg.textContent = "Area and monthly rent are required.";
+    statusMsg.textContent = t('errAreaRent');
     return;
   }
-  const rentNum = Number(rentRaw.replace(/[^0-9]/g,''));
+  const rentNum = Number(toAsciiDigits(rentRaw).replace(/[^0-9]/g,''));
   if(!rentNum){
-    statusMsg.textContent = "Enter the rent as a number, like 18000.";
+    statusMsg.textContent = t('errRentNumber');
     return;
   }
 
   const last = localStorage.getItem(LAST_SUBMIT_KEY);
   if(last && (Date.now() - Number(last)) < SUBMIT_COOLDOWN_MS){
-    statusMsg.textContent = "You just posted a rate — give it a minute before adding another.";
+    statusMsg.textContent = t('cooldownMsg');
     return;
   }
 
@@ -1016,20 +1270,20 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
     type: document.getElementById('f-type').value,
     rooms: document.getElementById('f-rooms').value,
     rent: rentNum,
-    advance: document.getElementById('f-advance').value.trim(),
+    advance: toAsciiDigits(document.getElementById('f-advance').value.trim()),
     hidden: document.getElementById('f-hidden').value.trim(),
-    year: document.getElementById('f-year').value.trim(),
+    year: toAsciiDigits(document.getElementById('f-year').value.trim()),
     note: document.getElementById('f-note').value.trim(),
     as_of: new Date().toISOString().slice(0,10),
     flag_count: 0
   };
 
-  statusMsg.textContent = "Posting…";
+  statusMsg.textContent = t('postingMsg');
   const { error } = await sb.from('reports').insert([report]);
 
   if(error){
     console.error(error);
-    statusMsg.textContent = "Couldn't post that just now. Try again.";
+    statusMsg.textContent = t('postFailMsg');
     return;
   }
 
@@ -1039,10 +1293,15 @@ document.getElementById('reportForm').addEventListener('submit', async (e)=>{
   render(document.getElementById('areaSearch').value);
   e.target.reset();
   document.getElementById('f-rooms').value = "2";
-  statusMsg.textContent = "Posted — now visible to everyone searching " + area + ".";
+  statusMsg.textContent = postedMsgLabel(area);
   goToArea(area);
 });
 
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> setLang(btn.dataset.langBtn));
+});
+
+applyStaticTranslations();
 loadReports();
 </script>
 </body>
